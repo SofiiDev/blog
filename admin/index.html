@@ -143,7 +143,7 @@ textarea { resize: vertical; min-height: 160px; line-height: 1.6; }
   </div>
 
   <div class="download-notice" id="download-notice">
-    <strong>Archivo descargado:</strong> Se descargó <code>noticias.json</code>. Reemplazá el archivo en <code>content/noticias.json</code>, luego hacé commit y push para publicar los cambios.
+    <strong>JSON descargado.</strong> Reemplazá <code>content/noticias.json</code> con el archivo descargado y hacé push para publicar los cambios en el blog.
   </div>
 
   <div class="stats-row">
@@ -249,7 +249,7 @@ textarea { resize: vertical; min-height: 160px; line-height: 1.6; }
     </div>
     <div class="modal-footer">
       <button class="btn btn-outline" onclick="cerrarModal()">Cancelar</button>
-      <button class="btn btn-primary" onclick="guardarArticulo()">Guardar y exportar JSON</button>
+      <button class="btn btn-primary" onclick="guardarArticulo()">Guardar</button>
     </div>
   </div>
 </div>
@@ -431,7 +431,6 @@ function guardarArticulo() {
   renderStats();
   renderTabla(noticias);
   cerrarModal();
-  descargarJSON(true);
 }
 
 function descargarJSON(desdeSave) {
@@ -469,7 +468,6 @@ function confirmarEliminar() {
   cerrarConfirm();
   renderStats();
   renderTabla(noticias);
-  descargarJSON(false);
 }
 
 // Close modal on overlay click
