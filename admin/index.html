@@ -13,51 +13,50 @@
   --rule: #e4e4e0; --rule-strong: #c8c8c2;
   --danger: #c0392b; --danger-light: #fdf0ef;
   --success: #1a7a3c; --success-light: #eafaf0;
-  --serif: 'Source Serif 4', Georgia, serif;
   --sans: 'DM Sans', -apple-system, sans-serif;
+  --serif: 'Source Serif 4', Georgia, serif;
 }
 body { font-family: var(--sans); background: var(--paper); color: var(--ink); min-height: 100vh; }
 a { text-decoration: none; color: inherit; }
 
-/* TOPBAR */
-.topbar { background: var(--ink); padding: 0; }
-.topbar-inner { max-width: 1200px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; gap: 24px; height: 52px; }
+.topbar { background: var(--ink); }
+.topbar-inner { max-width: 1200px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; gap: 16px; height: 52px; }
 .topbar-brand { font-family: var(--serif); font-size: 20px; font-weight: 700; color: #fff; letter-spacing: -0.5px; }
 .topbar-brand span { color: var(--accent); }
-.topbar-tag { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.08); padding: 3px 10px; border-radius: 2px; }
+.topbar-tag { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.08); padding: 3px 10px; }
 .topbar-spacer { flex: 1; }
 .topbar-link { font-size: 12px; color: rgba(255,255,255,0.55); }
 .topbar-link:hover { color: rgba(255,255,255,0.9); }
+.topbar-status { font-size: 11px; display: flex; align-items: center; gap: 6px; }
+.status-dot { width: 7px; height: 7px; border-radius: 50%; background: #aaa; }
+.status-dot.ok { background: #4ade80; }
+.status-dot.err { background: #f87171; }
+.status-label { color: rgba(255,255,255,0.5); }
 
-/* LAYOUT */
 .layout { max-width: 1200px; margin: 0 auto; padding: 32px; }
 
-/* PAGE HEADER */
 .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--rule); }
 .page-title { font-size: 22px; font-weight: 600; color: var(--ink); letter-spacing: -0.3px; }
 .page-subtitle { font-size: 13px; color: var(--ink3); margin-top: 3px; }
 
-/* BUTTONS */
 .btn { font-family: var(--sans); font-size: 13px; font-weight: 600; padding: 9px 20px; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 6px; transition: opacity .15s; }
-.btn:hover { opacity: 0.85; }
+.btn:hover:not(:disabled) { opacity: 0.85; }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
 .btn-primary { background: var(--accent); color: #fff; }
 .btn-outline { background: transparent; border: 1px solid var(--rule-strong); color: var(--ink2); }
 .btn-danger { background: var(--danger); color: #fff; }
 .btn-sm { font-size: 11px; padding: 5px 12px; }
 
-/* STATS ROW */
 .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
 .stat-card { background: var(--surface); border: 1px solid var(--rule); padding: 18px 20px; }
 .stat-value { font-size: 28px; font-weight: 700; color: var(--ink); letter-spacing: -1px; line-height: 1; margin-bottom: 4px; }
 .stat-label { font-size: 11px; color: var(--ink3); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; }
 
-/* TOOLBAR */
 .toolbar { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-.toolbar-search { flex: 1; max-width: 320px; display: flex; align-items: center; border: 1px solid var(--rule-strong); background: var(--surface); overflow: hidden; }
+.toolbar-search { flex: 1; max-width: 320px; display: flex; align-items: center; border: 1px solid var(--rule-strong); background: var(--surface); }
 .toolbar-search input { flex: 1; border: none; outline: none; padding: 8px 12px; font-family: var(--sans); font-size: 13px; background: transparent; }
 .toolbar-filter { font-size: 12px; color: var(--ink2); padding: 8px 12px; border: 1px solid var(--rule-strong); background: var(--surface); font-family: var(--sans); outline: none; cursor: pointer; }
 
-/* TABLE */
 .table-wrap { background: var(--surface); border: 1px solid var(--rule); overflow: hidden; }
 table { width: 100%; border-collapse: collapse; }
 thead { background: var(--paper); border-bottom: 2px solid var(--rule-strong); }
@@ -80,35 +79,40 @@ tr:hover td { background: var(--paper); }
 .td-actions { display: flex; gap: 6px; justify-content: flex-end; white-space: nowrap; }
 .empty-row td { text-align: center; padding: 48px; color: var(--ink3); font-size: 13px; }
 
+/* TOAST */
+.toast { position: fixed; bottom: 28px; right: 28px; z-index: 500; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+.toast-item { font-family: var(--sans); font-size: 13px; font-weight: 500; padding: 12px 18px; border-left: 3px solid; max-width: 360px; opacity: 0; transform: translateY(8px); transition: opacity .2s, transform .2s; pointer-events: auto; }
+.toast-item.show { opacity: 1; transform: translateY(0); }
+.toast-success { background: var(--success-light); color: var(--success); border-color: var(--success); }
+.toast-error   { background: var(--danger-light);  color: var(--danger);  border-color: var(--danger); }
+.toast-info    { background: var(--accent-light);  color: var(--accent);  border-color: var(--accent); }
+
 /* MODAL */
 .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 100; display: none; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
 .modal-overlay.open { display: flex; }
 .modal { background: var(--surface); width: 100%; max-width: 700px; border: 1px solid var(--rule); }
 .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; border-bottom: 1px solid var(--rule); }
-.modal-title { font-size: 16px; font-weight: 600; color: var(--ink); }
+.modal-title { font-size: 16px; font-weight: 600; }
 .modal-close { background: none; border: none; font-size: 22px; cursor: pointer; color: var(--ink3); line-height: 1; padding: 0 4px; }
 .modal-close:hover { color: var(--ink); }
 .modal-body { padding: 24px; }
-.modal-footer { padding: 16px 24px; border-top: 1px solid var(--rule); display: flex; justify-content: flex-end; gap: 10px; }
+.modal-footer { padding: 16px 24px; border-top: 1px solid var(--rule); display: flex; justify-content: flex-end; gap: 10px; align-items: center; }
+.modal-saving { font-size: 12px; color: var(--ink3); margin-right: auto; display: none; }
 
 /* FORM */
 .form-row { margin-bottom: 18px; }
 .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink3); margin-bottom: 6px; }
-input[type=text], input[type=date], select, textarea {
+input[type=text], input[type=date], input[type=password], select, textarea {
   width: 100%; font-family: var(--sans); font-size: 13px; color: var(--ink);
   border: 1px solid var(--rule-strong); background: var(--paper); padding: 9px 12px; outline: none;
   transition: border-color .15s;
 }
-input[type=text]:focus, input[type=date]:focus, select:focus, textarea:focus { border-color: var(--accent); }
+input:focus, select:focus, textarea:focus { border-color: var(--accent); background: #fff; }
 textarea { resize: vertical; min-height: 160px; line-height: 1.6; }
+.field-hint { font-size: 11px; color: var(--ink3); margin-top: 5px; }
 
-/* ALERT */
-.alert { padding: 10px 14px; font-size: 13px; margin-bottom: 16px; border-left: 3px solid; }
-.alert-success { background: var(--success-light); color: var(--success); border-color: var(--success); }
-.alert-info { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
-
-/* DELETE CONFIRM */
+/* CONFIRM */
 .confirm-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 200; display: none; align-items: center; justify-content: center; }
 .confirm-overlay.open { display: flex; }
 .confirm-box { background: var(--surface); border: 1px solid var(--rule); padding: 28px 32px; max-width: 400px; width: 90%; }
@@ -116,9 +120,15 @@ textarea { resize: vertical; min-height: 160px; line-height: 1.6; }
 .confirm-box p { font-size: 13px; color: var(--ink2); margin-bottom: 20px; line-height: 1.5; }
 .confirm-actions { display: flex; justify-content: flex-end; gap: 10px; }
 
-/* DOWNLOAD NOTICE */
-.download-notice { background: var(--success-light); border: 1px solid #a3d9b8; padding: 14px 18px; margin-bottom: 20px; font-size: 13px; color: var(--success); display: none; }
-.download-notice strong { font-weight: 600; }
+/* CONFIG PANEL */
+.config-banner { background: #fffbeb; border: 1px solid #fcd34d; padding: 14px 18px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; font-size: 13px; color: #92400e; }
+.config-banner strong { font-weight: 600; }
+.config-banner a { color: var(--accent); cursor: pointer; font-weight: 600; text-decoration: underline; }
+
+/* SETTINGS MODAL */
+.settings-section { margin-bottom: 22px; padding-bottom: 22px; border-bottom: 1px solid var(--rule); }
+.settings-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.settings-section h3 { font-size: 13px; font-weight: 600; margin-bottom: 14px; color: var(--ink); }
 </style>
 </head>
 <body>
@@ -128,11 +138,21 @@ textarea { resize: vertical; min-height: 160px; line-height: 1.6; }
     <div class="topbar-brand">InnovaDigital<span>.</span></div>
     <span class="topbar-tag">Admin</span>
     <div class="topbar-spacer"></div>
-    <a href="../index.html" class="topbar-link">← Ver el blog</a>
+    <div class="topbar-status">
+      <div class="status-dot" id="status-dot"></div>
+      <span class="status-label" id="status-label">Sin configurar</span>
+    </div>
+    <button class="btn btn-outline btn-sm" onclick="abrirConfig()" style="margin-left:12px;color:rgba(255,255,255,0.7);border-color:rgba(255,255,255,0.2);background:transparent;font-size:11px">⚙ Configuración</button>
+    <a href="../index.html" class="topbar-link" style="margin-left:8px">← Ver el blog</a>
   </div>
 </div>
 
 <div class="layout">
+
+  <div id="config-banner" class="config-banner" style="display:none">
+    <span>⚠</span>
+    <span><strong>Configuración requerida:</strong> Para publicar artículos directamente en el blog necesitás configurar tu token de GitHub. <a onclick="abrirConfig()">Configurar ahora</a></span>
+  </div>
 
   <div class="page-header">
     <div>
@@ -142,21 +162,17 @@ textarea { resize: vertical; min-height: 160px; line-height: 1.6; }
     <button class="btn btn-primary" onclick="abrirModalNuevo()">+ Nuevo artículo</button>
   </div>
 
-  <div class="download-notice" id="download-notice">
-    <strong>JSON descargado.</strong> Reemplazá <code>content/noticias.json</code> con el archivo descargado y hacé push para publicar los cambios en el blog.
-  </div>
-
   <div class="stats-row">
     <div class="stat-card">
-      <div class="stat-value" id="stat-total">0</div>
-      <div class="stat-label">Artículos totales</div>
+      <div class="stat-value" id="stat-total">—</div>
+      <div class="stat-label">Artículos</div>
     </div>
     <div class="stat-card">
-      <div class="stat-value" id="stat-cats">0</div>
+      <div class="stat-value" id="stat-cats">—</div>
       <div class="stat-label">Categorías</div>
     </div>
     <div class="stat-card">
-      <div class="stat-value" id="stat-autores">0</div>
+      <div class="stat-value" id="stat-autores">—</div>
       <div class="stat-label">Autores</div>
     </div>
     <div class="stat-card">
@@ -179,8 +195,6 @@ textarea { resize: vertical; min-height: 160px; line-height: 1.6; }
       <option>Liderazgo</option>
       <option>Industria 4.0</option>
     </select>
-    <div style="flex:1"></div>
-    <button class="btn btn-outline btn-sm" onclick="descargarJSON()" title="Descargar noticias.json actualizado">⬇ Exportar JSON</button>
   </div>
 
   <div class="table-wrap">
@@ -202,6 +216,9 @@ textarea { resize: vertical; min-height: 160px; line-height: 1.6; }
 
 </div>
 
+<!-- TOAST CONTAINER -->
+<div class="toast" id="toast-container"></div>
+
 <!-- MODAL ARTÍCULO -->
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal">
@@ -210,7 +227,6 @@ textarea { resize: vertical; min-height: 160px; line-height: 1.6; }
       <button class="modal-close" onclick="cerrarModal()">×</button>
     </div>
     <div class="modal-body">
-      <div id="modal-alert" class="alert alert-success" style="display:none"></div>
       <div class="form-row">
         <label for="f-titulo">Título *</label>
         <input type="text" id="f-titulo" placeholder="Título del artículo">
@@ -248,8 +264,9 @@ textarea { resize: vertical; min-height: 160px; line-height: 1.6; }
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-outline" onclick="cerrarModal()">Cancelar</button>
-      <button class="btn btn-primary" onclick="guardarArticulo()">Guardar</button>
+      <span class="modal-saving" id="modal-saving">Publicando…</span>
+      <button class="btn btn-outline" onclick="cerrarModal()" id="btn-cancelar">Cancelar</button>
+      <button class="btn btn-primary" onclick="guardarArticulo()" id="btn-guardar">Publicar</button>
     </div>
   </div>
 </div>
@@ -258,16 +275,176 @@ textarea { resize: vertical; min-height: 160px; line-height: 1.6; }
 <div class="confirm-overlay" id="confirm-overlay">
   <div class="confirm-box">
     <h3>Eliminar artículo</h3>
-    <p id="confirm-msg">¿Seguro que querés eliminar este artículo? Esta acción no se puede deshacer.</p>
+    <p id="confirm-msg">¿Seguro que querés eliminar este artículo?</p>
     <div class="confirm-actions">
       <button class="btn btn-outline" onclick="cerrarConfirm()">Cancelar</button>
-      <button class="btn btn-danger" onclick="confirmarEliminar()">Eliminar</button>
+      <button class="btn btn-danger" id="btn-confirmar-eliminar" onclick="confirmarEliminar()">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<!-- SETTINGS MODAL -->
+<div class="modal-overlay" id="settings-overlay">
+  <div class="modal" style="max-width:540px">
+    <div class="modal-header">
+      <div class="modal-title">Configuración</div>
+      <button class="modal-close" onclick="cerrarConfig()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="settings-section">
+        <h3>Conexión con GitHub</h3>
+        <p style="font-size:13px;color:var(--ink2);margin-bottom:16px;line-height:1.6">
+          Para publicar artículos directamente necesitás un <strong>token de acceso personal</strong> de GitHub con permisos de escritura sobre el repositorio.
+        </p>
+        <div class="form-row">
+          <label for="cfg-token">Token de GitHub *</label>
+          <input type="password" id="cfg-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+          <div class="field-hint">Crealo en GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens. Necesita permiso de <em>Contents: Read and write</em> sobre este repositorio.</div>
+        </div>
+        <div class="form-row">
+          <label for="cfg-owner">Usuario / organización *</label>
+          <input type="text" id="cfg-owner" placeholder="sofiidev">
+        </div>
+        <div class="form-row">
+          <label for="cfg-repo">Nombre del repositorio *</label>
+          <input type="text" id="cfg-repo" placeholder="blog">
+        </div>
+        <div class="form-row">
+          <label for="cfg-branch">Rama</label>
+          <input type="text" id="cfg-branch" placeholder="main">
+          <div class="field-hint">Dejá en blanco para usar <code>main</code>.</div>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="probarConexion()" id="btn-probar">Probar conexión</button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="cerrarConfig()">Cancelar</button>
+      <button class="btn btn-primary" onclick="guardarConfig()">Guardar configuración</button>
     </div>
   </div>
 </div>
 
 <script>
+// ─── CONFIG ─────────────────────────────────────────────────────────────────
+
+const CFG_KEY = 'innovadigital_cfg';
+
+function cargarConfig() {
+  try { return JSON.parse(localStorage.getItem(CFG_KEY)) || {}; } catch { return {}; }
+}
+
+function guardarConfig() {
+  const token  = document.getElementById('cfg-token').value.trim();
+  const owner  = document.getElementById('cfg-owner').value.trim();
+  const repo   = document.getElementById('cfg-repo').value.trim();
+  const branch = document.getElementById('cfg-branch').value.trim() || 'main';
+  if (!token || !owner || !repo) {
+    toast('Completá token, usuario y repositorio.', 'error'); return;
+  }
+  localStorage.setItem(CFG_KEY, JSON.stringify({ token, owner, repo, branch }));
+  cerrarConfig();
+  toast('Configuración guardada.', 'success');
+  actualizarEstadoConexion();
+  cargar();
+}
+
+function abrirConfig() {
+  const cfg = cargarConfig();
+  document.getElementById('cfg-token').value  = cfg.token  || '';
+  document.getElementById('cfg-owner').value  = cfg.owner  || '';
+  document.getElementById('cfg-repo').value   = cfg.repo   || '';
+  document.getElementById('cfg-branch').value = cfg.branch || '';
+  document.getElementById('settings-overlay').classList.add('open');
+}
+
+function cerrarConfig() {
+  document.getElementById('settings-overlay').classList.remove('open');
+}
+
+async function probarConexion() {
+  const btn = document.getElementById('btn-probar');
+  const token  = document.getElementById('cfg-token').value.trim();
+  const owner  = document.getElementById('cfg-owner').value.trim();
+  const repo   = document.getElementById('cfg-repo').value.trim();
+  const branch = document.getElementById('cfg-branch').value.trim() || 'main';
+  if (!token || !owner || !repo) { toast('Completá los campos primero.', 'error'); return; }
+  btn.disabled = true; btn.textContent = 'Probando…';
+  try {
+    const r = await ghGet(token, owner, repo, branch);
+    if (r.ok) { toast('Conexión exitosa.', 'success'); }
+    else { toast('Error ' + r.status + ': verificá el token y el repositorio.', 'error'); }
+  } catch(e) {
+    toast('No se pudo conectar: ' + e.message, 'error');
+  }
+  btn.disabled = false; btn.textContent = 'Probar conexión';
+}
+
+function actualizarEstadoConexion() {
+  const cfg = cargarConfig();
+  const dot   = document.getElementById('status-dot');
+  const label = document.getElementById('status-label');
+  const banner = document.getElementById('config-banner');
+  if (cfg.token && cfg.owner && cfg.repo) {
+    dot.className = 'status-dot ok';
+    label.textContent = cfg.owner + '/' + cfg.repo;
+    banner.style.display = 'none';
+  } else {
+    dot.className = 'status-dot err';
+    label.textContent = 'Sin configurar';
+    banner.style.display = 'flex';
+  }
+}
+
+// ─── GITHUB API ──────────────────────────────────────────────────────────────
+
+const CONTENT_PATH = 'content/noticias.json';
+
+async function ghGet(token, owner, repo, branch) {
+  return fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${CONTENT_PATH}?ref=${branch}`, {
+    headers: { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json' }
+  });
+}
+
+async function leerArchivoGH() {
+  const cfg = cargarConfig();
+  const r = await ghGet(cfg.token, cfg.owner, cfg.repo, cfg.branch || 'main');
+  if (r.status === 404) return { content: { noticias: [] }, sha: null };
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  const data = await r.json();
+  const decoded = JSON.parse(atob(data.content.replace(/\n/g, '')));
+  return { content: decoded, sha: data.sha };
+}
+
+async function escribirArchivoGH(noticias, sha, mensaje) {
+  const cfg = cargarConfig();
+  const body = { noticias };
+  const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(body, null, 2))));
+  const payload = {
+    message: mensaje,
+    content: encoded,
+    branch: cfg.branch || 'main'
+  };
+  if (sha) payload.sha = sha;
+  const r = await fetch(`https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${CONTENT_PATH}`, {
+    method: 'PUT',
+    headers: {
+      Authorization: 'Bearer ' + cfg.token,
+      Accept: 'application/vnd.github+json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  });
+  if (!r.ok) {
+    const err = await r.json().catch(() => ({}));
+    throw new Error(err.message || 'HTTP ' + r.status);
+  }
+  return r.json();
+}
+
+// ─── ESTADO LOCAL ────────────────────────────────────────────────────────────
+
 let noticias = [];
+let shaActual = null;
 let editandoId = null;
 let eliminandoId = null;
 
@@ -280,15 +457,7 @@ function formatDate(d) {
 }
 
 function catBadge(cat) {
-  const map = {
-    'IA Industrial': 'badge-ia',
-    'Logística': 'badge-logistica',
-    'Energía': 'badge-energia',
-    'Ciberseguridad': 'badge-ciber',
-    'Salud Digital': 'badge-salud',
-    'Liderazgo': 'badge-liderazgo',
-    'Industria 4.0': 'badge-industria'
-  };
+  const map = { 'IA Industrial':'badge-ia','Logística':'badge-logistica','Energía':'badge-energia','Ciberseguridad':'badge-ciber','Salud Digital':'badge-salud','Liderazgo':'badge-liderazgo','Industria 4.0':'badge-industria' };
   return map[cat] || 'badge-default';
 }
 
@@ -296,27 +465,22 @@ function generarId() {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 }
 
-async function cargar() {
-  try {
-    const res = await fetch('../content/noticias.json?t=' + Date.now());
-    const data = await res.json();
-    noticias = data.noticias || [];
-  } catch(e) {
-    noticias = [];
-  }
-  renderStats();
-  renderTabla(noticias);
+function escHtml(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
+function escAttr(s) {
+  return String(s || '').replace(/'/g,'&#39;').replace(/"/g,'&quot;');
+}
+
+// ─── RENDER ──────────────────────────────────────────────────────────────────
 
 function renderStats() {
   document.getElementById('stat-total').textContent = noticias.length;
-  const cats = new Set(noticias.map(n => n.categoria).filter(Boolean));
-  document.getElementById('stat-cats').textContent = cats.size;
-  const autores = new Set(noticias.map(n => n.autor).filter(Boolean));
-  document.getElementById('stat-autores').textContent = autores.size;
+  document.getElementById('stat-cats').textContent = new Set(noticias.map(n => n.categoria).filter(Boolean)).size;
+  document.getElementById('stat-autores').textContent = new Set(noticias.map(n => n.autor).filter(Boolean)).size;
   if (noticias.length) {
-    const sorted = [...noticias].sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
-    document.getElementById('stat-ultimo').textContent = formatDate(sorted[0].fecha);
+    const last = [...noticias].sort((a,b) => new Date(b.fecha) - new Date(a.fecha))[0];
+    document.getElementById('stat-ultimo').textContent = formatDate(last.fecha);
   } else {
     document.getElementById('stat-ultimo').textContent = '—';
   }
@@ -328,7 +492,7 @@ function renderTabla(items) {
     tbody.innerHTML = '<tr class="empty-row"><td colspan="5">No hay artículos todavía. ¡Creá el primero!</td></tr>';
     return;
   }
-  const sorted = [...items].sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+  const sorted = [...items].sort((a,b) => new Date(b.fecha) - new Date(a.fecha));
   tbody.innerHTML = sorted.map(n => `
     <tr>
       <td class="td-title">
@@ -349,22 +513,33 @@ function renderTabla(items) {
 function filtrar() {
   const q = document.getElementById('search-input').value.toLowerCase();
   const cat = document.getElementById('cat-filter').value;
-  const filtrados = noticias.filter(n => {
-    const matchQ = !q || (n.titulo || '').toLowerCase().includes(q) || (n.resumen || '').toLowerCase().includes(q) || (n.autor || '').toLowerCase().includes(q);
-    const matchCat = !cat || n.categoria === cat;
-    return matchQ && matchCat;
-  });
-  renderTabla(filtrados);
+  renderTabla(noticias.filter(n => {
+    const mq = !q || (n.titulo||'').toLowerCase().includes(q) || (n.resumen||'').toLowerCase().includes(q) || (n.autor||'').toLowerCase().includes(q);
+    const mc = !cat || n.categoria === cat;
+    return mq && mc;
+  }));
 }
 
-function escHtml(s) {
-  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function escAttr(s) {
-  return String(s || '').replace(/'/g,'&#39;').replace(/"/g,'&quot;');
+// ─── CARGA ───────────────────────────────────────────────────────────────────
+
+async function cargar() {
+  const cfg = cargarConfig();
+  document.getElementById('tabla-cuerpo').innerHTML = '<tr class="empty-row"><td colspan="5">Cargando artículos…</td></tr>';
+  if (!cfg.token) return;
+  try {
+    const { content, sha } = await leerArchivoGH();
+    noticias = content.noticias || [];
+    shaActual = sha;
+    renderStats();
+    renderTabla(noticias);
+  } catch(e) {
+    document.getElementById('tabla-cuerpo').innerHTML = '<tr class="empty-row"><td colspan="5">No se pudo cargar. Verificá la configuración.</td></tr>';
+    toast('Error al cargar: ' + e.message, 'error');
+  }
 }
 
-// MODAL
+// ─── MODAL ARTÍCULO ──────────────────────────────────────────────────────────
+
 function abrirModalNuevo() {
   editandoId = null;
   document.getElementById('modal-titulo').textContent = 'Nuevo artículo';
@@ -374,9 +549,10 @@ function abrirModalNuevo() {
   document.getElementById('f-fecha').value = new Date().toISOString().slice(0, 10);
   document.getElementById('f-autor').value = '';
   document.getElementById('f-cuerpo').value = '';
-  document.getElementById('modal-alert').style.display = 'none';
+  document.getElementById('btn-guardar').textContent = 'Publicar';
+  setGuardando(false);
   document.getElementById('modal-overlay').classList.add('open');
-  document.getElementById('f-titulo').focus();
+  setTimeout(() => document.getElementById('f-titulo').focus(), 50);
 }
 
 function abrirModalEditar(id) {
@@ -384,15 +560,16 @@ function abrirModalEditar(id) {
   if (!n) return;
   editandoId = id;
   document.getElementById('modal-titulo').textContent = 'Editar artículo';
-  document.getElementById('f-titulo').value = n.titulo || '';
-  document.getElementById('f-resumen').value = n.resumen || '';
+  document.getElementById('f-titulo').value    = n.titulo    || '';
+  document.getElementById('f-resumen').value   = n.resumen   || '';
   document.getElementById('f-categoria').value = n.categoria || '';
-  document.getElementById('f-fecha').value = n.fecha || '';
-  document.getElementById('f-autor').value = n.autor || '';
-  document.getElementById('f-cuerpo').value = n.cuerpo || '';
-  document.getElementById('modal-alert').style.display = 'none';
+  document.getElementById('f-fecha').value     = n.fecha     || '';
+  document.getElementById('f-autor').value     = n.autor     || '';
+  document.getElementById('f-cuerpo').value    = n.cuerpo    || '';
+  document.getElementById('btn-guardar').textContent = 'Guardar cambios';
+  setGuardando(false);
   document.getElementById('modal-overlay').classList.add('open');
-  document.getElementById('f-titulo').focus();
+  setTimeout(() => document.getElementById('f-titulo').focus(), 50);
 }
 
 function cerrarModal() {
@@ -400,60 +577,68 @@ function cerrarModal() {
   editandoId = null;
 }
 
-function guardarArticulo() {
-  const titulo = document.getElementById('f-titulo').value.trim();
-  const resumen = document.getElementById('f-resumen').value.trim();
+function setGuardando(v) {
+  document.getElementById('modal-saving').style.display = v ? 'block' : 'none';
+  document.getElementById('btn-guardar').disabled = v;
+  document.getElementById('btn-cancelar').disabled = v;
+}
+
+async function guardarArticulo() {
+  const titulo    = document.getElementById('f-titulo').value.trim();
+  const resumen   = document.getElementById('f-resumen').value.trim();
   const categoria = document.getElementById('f-categoria').value;
-  const fecha = document.getElementById('f-fecha').value;
-  const autor = document.getElementById('f-autor').value.trim();
-  const cuerpo = document.getElementById('f-cuerpo').value.trim();
+  const fecha     = document.getElementById('f-fecha').value;
+  const autor     = document.getElementById('f-autor').value.trim();
+  const cuerpo    = document.getElementById('f-cuerpo').value.trim();
 
   if (!titulo || !resumen || !categoria || !fecha || !autor || !cuerpo) {
-    const alertEl = document.getElementById('modal-alert');
-    alertEl.textContent = 'Completá todos los campos obligatorios antes de guardar.';
-    alertEl.className = 'alert';
-    alertEl.style.background = '#fdf0ef';
-    alertEl.style.color = '#c0392b';
-    alertEl.style.borderColor = '#c0392b';
-    alertEl.style.display = 'block';
-    return;
+    toast('Completá todos los campos antes de publicar.', 'error'); return;
   }
 
-  if (editandoId) {
-    const idx = noticias.findIndex(x => x.id === editandoId);
-    if (idx !== -1) {
-      noticias[idx] = { ...noticias[idx], titulo, resumen, categoria, fecha, autor, cuerpo };
+  const cfg = cargarConfig();
+  if (!cfg.token) {
+    toast('Configurá el token de GitHub primero.', 'error');
+    abrirConfig(); return;
+  }
+
+  setGuardando(true);
+  document.getElementById('modal-saving').textContent = 'Publicando en el blog…';
+
+  try {
+    // Leer SHA actualizado para evitar conflictos
+    const { content, sha } = await leerArchivoGH();
+    let lista = content.noticias || [];
+    shaActual = sha;
+
+    if (editandoId) {
+      lista = lista.map(x => x.id === editandoId ? { ...x, titulo, resumen, categoria, fecha, autor, cuerpo } : x);
+    } else {
+      lista.push({ id: generarId(), titulo, resumen, categoria, fecha, autor, cuerpo });
     }
-  } else {
-    noticias.push({ id: generarId(), titulo, resumen, categoria, fecha, autor, cuerpo });
+
+    const msg = editandoId ? `Editar artículo: ${titulo}` : `Nuevo artículo: ${titulo}`;
+    const res = await escribirArchivoGH(lista, sha, msg);
+
+    noticias = lista;
+    shaActual = res.content?.sha || sha;
+    renderStats();
+    renderTabla(noticias);
+    cerrarModal();
+    toast(editandoId ? 'Artículo actualizado. El blog se actualizará en 1-2 minutos.' : 'Artículo publicado. El blog se actualizará en 1-2 minutos.', 'success');
+  } catch(e) {
+    toast('Error al publicar: ' + e.message, 'error');
+    setGuardando(false);
   }
-
-  renderStats();
-  renderTabla(noticias);
-  cerrarModal();
 }
 
-function descargarJSON(desdeSave) {
-  const data = JSON.stringify({ noticias }, null, 2);
-  const blob = new Blob([data], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'noticias.json';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  const notice = document.getElementById('download-notice');
-  notice.style.display = 'block';
-  setTimeout(() => { notice.style.display = 'none'; }, 8000);
-}
+// ─── DELETE ──────────────────────────────────────────────────────────────────
 
-// DELETE
 function pedirEliminar(id) {
   eliminandoId = id;
   const n = noticias.find(x => x.id === id);
   document.getElementById('confirm-msg').textContent = `¿Seguro que querés eliminar "${n ? n.titulo : 'este artículo'}"? Esta acción no se puede deshacer.`;
+  document.getElementById('btn-confirmar-eliminar').disabled = false;
+  document.getElementById('btn-confirmar-eliminar').textContent = 'Eliminar';
   document.getElementById('confirm-overlay').classList.add('open');
 }
 
@@ -462,22 +647,55 @@ function cerrarConfirm() {
   eliminandoId = null;
 }
 
-function confirmarEliminar() {
+async function confirmarEliminar() {
   if (!eliminandoId) return;
-  noticias = noticias.filter(x => x.id !== eliminandoId);
-  cerrarConfirm();
-  renderStats();
-  renderTabla(noticias);
+  const cfg = cargarConfig();
+  if (!cfg.token) { toast('Configurá el token de GitHub primero.', 'error'); cerrarConfirm(); return; }
+
+  const btn = document.getElementById('btn-confirmar-eliminar');
+  btn.disabled = true; btn.textContent = 'Eliminando…';
+
+  const n = noticias.find(x => x.id === eliminandoId);
+  const lista = noticias.filter(x => x.id !== eliminandoId);
+
+  try {
+    const { sha } = await leerArchivoGH();
+    await escribirArchivoGH(lista, sha, `Eliminar artículo: ${n ? n.titulo : eliminandoId}`);
+    noticias = lista;
+    renderStats();
+    renderTabla(noticias);
+    cerrarConfirm();
+    toast('Artículo eliminado. El blog se actualizará en 1-2 minutos.', 'success');
+  } catch(e) {
+    toast('Error al eliminar: ' + e.message, 'error');
+    btn.disabled = false; btn.textContent = 'Eliminar';
+  }
 }
 
-// Close modal on overlay click
-document.getElementById('modal-overlay').addEventListener('click', function(e) {
-  if (e.target === this) cerrarModal();
-});
-document.getElementById('confirm-overlay').addEventListener('click', function(e) {
-  if (e.target === this) cerrarConfirm();
-});
+// ─── TOAST ───────────────────────────────────────────────────────────────────
 
+function toast(msg, type = 'info') {
+  const container = document.getElementById('toast-container');
+  const el = document.createElement('div');
+  el.className = `toast-item toast-${type}`;
+  el.textContent = msg;
+  container.appendChild(el);
+  requestAnimationFrame(() => { requestAnimationFrame(() => el.classList.add('show')); });
+  setTimeout(() => {
+    el.classList.remove('show');
+    setTimeout(() => el.remove(), 300);
+  }, 5000);
+}
+
+// ─── CERRAR CON CLICK FUERA ──────────────────────────────────────────────────
+
+document.getElementById('modal-overlay').addEventListener('click', function(e) { if (e.target === this) cerrarModal(); });
+document.getElementById('confirm-overlay').addEventListener('click', function(e) { if (e.target === this) cerrarConfirm(); });
+document.getElementById('settings-overlay').addEventListener('click', function(e) { if (e.target === this) cerrarConfig(); });
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+
+actualizarEstadoConexion();
 cargar();
 </script>
 </body>
