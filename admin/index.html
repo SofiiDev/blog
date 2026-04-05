@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel de Administración — InnovaDigital</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --ink: #0c0c0c; --ink2: #3d3d3d; --ink3: #8a8a8a;
+  --paper: #fafaf8; --surface: #ffffff;
+  --accent: #0046e5; --accent-light: #eef2ff;
+  --rule: #e4e4e0; --rule-strong: #c8c8c2;
+  --danger: #c0392b; --danger-light: #fdf0ef;
+  --success: #1a7a3c; --success-light: #eafaf0;
+  --serif: 'Source Serif 4', Georgia, serif;
+  --sans: 'DM Sans', -apple-system, sans-serif;
+}
+body { font-family: var(--sans); background: var(--paper); color: var(--ink); min-height: 100vh; }
+a { text-decoration: none; color: inherit; }
+
+/* TOPBAR */
+.topbar { background: var(--ink); padding: 0; }
+.topbar-inner { max-width: 1200px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; gap: 24px; height: 52px; }
+.topbar-brand { font-family: var(--serif); font-size: 20px; font-weight: 700; color: #fff; letter-spacing: -0.5px; }
+.topbar-brand span { color: var(--accent); }
+.topbar-tag { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.08); padding: 3px 10px; border-radius: 2px; }
+.topbar-spacer { flex: 1; }
+.topbar-link { font-size: 12px; color: rgba(255,255,255,0.55); }
+.topbar-link:hover { color: rgba(255,255,255,0.9); }
+
+/* LAYOUT */
+.layout { max-width: 1200px; margin: 0 auto; padding: 32px; }
+
+/* PAGE HEADER */
+.page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--rule); }
+.page-title { font-size: 22px; font-weight: 600; color: var(--ink); letter-spacing: -0.3px; }
+.page-subtitle { font-size: 13px; color: var(--ink3); margin-top: 3px; }
+
+/* BUTTONS */
+.btn { font-family: var(--sans); font-size: 13px; font-weight: 600; padding: 9px 20px; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 6px; transition: opacity .15s; }
+.btn:hover { opacity: 0.85; }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-outline { background: transparent; border: 1px solid var(--rule-strong); color: var(--ink2); }
+.btn-danger { background: var(--danger); color: #fff; }
+.btn-sm { font-size: 11px; padding: 5px 12px; }
+
+/* STATS ROW */
+.stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+.stat-card { background: var(--surface); border: 1px solid var(--rule); padding: 18px 20px; }
+.stat-value { font-size: 28px; font-weight: 700; color: var(--ink); letter-spacing: -1px; line-height: 1; margin-bottom: 4px; }
+.stat-label { font-size: 11px; color: var(--ink3); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; }
+
+/* TOOLBAR */
+.toolbar { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.toolbar-search { flex: 1; max-width: 320px; display: flex; align-items: center; border: 1px solid var(--rule-strong); background: var(--surface); overflow: hidden; }
+.toolbar-search input { flex: 1; border: none; outline: none; padding: 8px 12px; font-family: var(--sans); font-size: 13px; background: transparent; }
+.toolbar-filter { font-size: 12px; color: var(--ink2); padding: 8px 12px; border: 1px solid var(--rule-strong); background: var(--surface); font-family: var(--sans); outline: none; cursor: pointer; }
+
+/* TABLE */
+.table-wrap { background: var(--surface); border: 1px solid var(--rule); overflow: hidden; }
+table { width: 100%; border-collapse: collapse; }
+thead { background: var(--paper); border-bottom: 2px solid var(--rule-strong); }
+th { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink3); padding: 10px 16px; text-align: left; white-space: nowrap; }
+td { padding: 14px 16px; border-bottom: 1px solid var(--rule); font-size: 13px; vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--paper); }
+.td-title { font-weight: 600; color: var(--ink); max-width: 340px; }
+.td-title-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 320px; display: block; }
+.td-excerpt { font-size: 11px; color: var(--ink3); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 320px; }
+.badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 9px; white-space: nowrap; }
+.badge-ia        { background: #0c1a3a22; color: #0c1a3a; }
+.badge-logistica { background: #1a3a2022; color: #1a3a20; }
+.badge-energia   { background: #2a1a3a22; color: #2a1a3a; }
+.badge-ciber     { background: #3a1a1a22; color: #3a1a1a; }
+.badge-salud     { background: #1a2a3a22; color: #1a2a3a; }
+.badge-liderazgo { background: #2a2a1a22; color: #2a2a1a; }
+.badge-industria { background: #1a302822; color: #1a3028; }
+.badge-default   { background: var(--accent-light); color: var(--accent); }
+.td-actions { display: flex; gap: 6px; justify-content: flex-end; white-space: nowrap; }
+.empty-row td { text-align: center; padding: 48px; color: var(--ink3); font-size: 13px; }
+
+/* MODAL */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 100; display: none; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+.modal-overlay.open { display: flex; }
+.modal { background: var(--surface); width: 100%; max-width: 700px; border: 1px solid var(--rule); }
+.modal-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; border-bottom: 1px solid var(--rule); }
+.modal-title { font-size: 16px; font-weight: 600; color: var(--ink); }
+.modal-close { background: none; border: none; font-size: 22px; cursor: pointer; color: var(--ink3); line-height: 1; padding: 0 4px; }
+.modal-close:hover { color: var(--ink); }
+.modal-body { padding: 24px; }
+.modal-footer { padding: 16px 24px; border-top: 1px solid var(--rule); display: flex; justify-content: flex-end; gap: 10px; }
+
+/* FORM */
+.form-row { margin-bottom: 18px; }
+.form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink3); margin-bottom: 6px; }
+input[type=text], input[type=date], select, textarea {
+  width: 100%; font-family: var(--sans); font-size: 13px; color: var(--ink);
+  border: 1px solid var(--rule-strong); background: var(--paper); padding: 9px 12px; outline: none;
+  transition: border-color .15s;
+}
+input[type=text]:focus, input[type=date]:focus, select:focus, textarea:focus { border-color: var(--accent); }
+textarea { resize: vertical; min-height: 160px; line-height: 1.6; }
+
+/* ALERT */
+.alert { padding: 10px 14px; font-size: 13px; margin-bottom: 16px; border-left: 3px solid; }
+.alert-success { background: var(--success-light); color: var(--success); border-color: var(--success); }
+.alert-info { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+
+/* DELETE CONFIRM */
+.confirm-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 200; display: none; align-items: center; justify-content: center; }
+.confirm-overlay.open { display: flex; }
+.confirm-box { background: var(--surface); border: 1px solid var(--rule); padding: 28px 32px; max-width: 400px; width: 90%; }
+.confirm-box h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+.confirm-box p { font-size: 13px; color: var(--ink2); margin-bottom: 20px; line-height: 1.5; }
+.confirm-actions { display: flex; justify-content: flex-end; gap: 10px; }
+
+/* DOWNLOAD NOTICE */
+.download-notice { background: var(--success-light); border: 1px solid #a3d9b8; padding: 14px 18px; margin-bottom: 20px; font-size: 13px; color: var(--success); display: none; }
+.download-notice strong { font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-brand">InnovaDigital<span>.</span></div>
+    <span class="topbar-tag">Admin</span>
+    <div class="topbar-spacer"></div>
+    <a href="../index.html" class="topbar-link">← Ver el blog</a>
+  </div>
+</div>
+
+<div class="layout">
+
+  <div class="page-header">
+    <div>
+      <div class="page-title">Panel de Administración</div>
+      <div class="page-subtitle">Gestioná los artículos de InnovaDigital</div>
+    </div>
+    <button class="btn btn-primary" onclick="abrirModalNuevo()">+ Nuevo artículo</button>
+  </div>
+
+  <div class="download-notice" id="download-notice">
+    <strong>Archivo descargado:</strong> Se descargó <code>noticias.json</code>. Reemplazá el archivo en <code>content/noticias.json</code>, luego hacé commit y push para publicar los cambios.
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-value" id="stat-total">0</div>
+      <div class="stat-label">Artículos totales</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="stat-cats">0</div>
+      <div class="stat-label">Categorías</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="stat-autores">0</div>
+      <div class="stat-label">Autores</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="stat-ultimo">—</div>
+      <div class="stat-label">Última publicación</div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <div class="toolbar-search">
+      <input type="text" id="search-input" placeholder="Buscar artículos…" oninput="filtrar()">
+    </div>
+    <select class="toolbar-filter" id="cat-filter" onchange="filtrar()">
+      <option value="">Todas las categorías</option>
+      <option>IA Industrial</option>
+      <option>Logística</option>
+      <option>Energía</option>
+      <option>Ciberseguridad</option>
+      <option>Salud Digital</option>
+      <option>Liderazgo</option>
+      <option>Industria 4.0</option>
+    </select>
+    <div style="flex:1"></div>
+    <button class="btn btn-outline btn-sm" onclick="descargarJSON()" title="Descargar noticias.json actualizado">⬇ Exportar JSON</button>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Artículo</th>
+          <th>Categoría</th>
+          <th>Autor</th>
+          <th>Fecha</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="tabla-cuerpo">
+        <tr class="empty-row"><td colspan="5">Cargando artículos…</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- MODAL ARTÍCULO -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-titulo">Nuevo artículo</div>
+      <button class="modal-close" onclick="cerrarModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div id="modal-alert" class="alert alert-success" style="display:none"></div>
+      <div class="form-row">
+        <label for="f-titulo">Título *</label>
+        <input type="text" id="f-titulo" placeholder="Título del artículo">
+      </div>
+      <div class="form-row">
+        <label for="f-resumen">Resumen / bajada *</label>
+        <input type="text" id="f-resumen" placeholder="Una o dos oraciones que resuman el artículo">
+      </div>
+      <div class="form-row form-row-2">
+        <div>
+          <label for="f-categoria">Categoría *</label>
+          <select id="f-categoria">
+            <option value="">Seleccioná una categoría</option>
+            <option>IA Industrial</option>
+            <option>Logística</option>
+            <option>Energía</option>
+            <option>Ciberseguridad</option>
+            <option>Salud Digital</option>
+            <option>Liderazgo</option>
+            <option>Industria 4.0</option>
+          </select>
+        </div>
+        <div>
+          <label for="f-fecha">Fecha de publicación *</label>
+          <input type="date" id="f-fecha">
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="f-autor">Autor *</label>
+        <input type="text" id="f-autor" placeholder="Nombre del autor">
+      </div>
+      <div class="form-row">
+        <label for="f-cuerpo">Cuerpo del artículo *</label>
+        <textarea id="f-cuerpo" placeholder="Escribí el contenido completo del artículo aquí…"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="cerrarModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="guardarArticulo()">Guardar y exportar JSON</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM DELETE -->
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-box">
+    <h3>Eliminar artículo</h3>
+    <p id="confirm-msg">¿Seguro que querés eliminar este artículo? Esta acción no se puede deshacer.</p>
+    <div class="confirm-actions">
+      <button class="btn btn-outline" onclick="cerrarConfirm()">Cancelar</button>
+      <button class="btn btn-danger" onclick="confirmarEliminar()">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let noticias = [];
+let editandoId = null;
+let eliminandoId = null;
+
+const meses = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+
+function formatDate(d) {
+  if (!d) return '—';
+  const dt = new Date(d + 'T00:00:00');
+  return `${dt.getDate()} ${meses[dt.getMonth()]}. ${dt.getFullYear()}`;
+}
+
+function catBadge(cat) {
+  const map = {
+    'IA Industrial': 'badge-ia',
+    'Logística': 'badge-logistica',
+    'Energía': 'badge-energia',
+    'Ciberseguridad': 'badge-ciber',
+    'Salud Digital': 'badge-salud',
+    'Liderazgo': 'badge-liderazgo',
+    'Industria 4.0': 'badge-industria'
+  };
+  return map[cat] || 'badge-default';
+}
+
+function generarId() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+}
+
+async function cargar() {
+  try {
+    const res = await fetch('../content/noticias.json?t=' + Date.now());
+    const data = await res.json();
+    noticias = data.noticias || [];
+  } catch(e) {
+    noticias = [];
+  }
+  renderStats();
+  renderTabla(noticias);
+}
+
+function renderStats() {
+  document.getElementById('stat-total').textContent = noticias.length;
+  const cats = new Set(noticias.map(n => n.categoria).filter(Boolean));
+  document.getElementById('stat-cats').textContent = cats.size;
+  const autores = new Set(noticias.map(n => n.autor).filter(Boolean));
+  document.getElementById('stat-autores').textContent = autores.size;
+  if (noticias.length) {
+    const sorted = [...noticias].sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+    document.getElementById('stat-ultimo').textContent = formatDate(sorted[0].fecha);
+  } else {
+    document.getElementById('stat-ultimo').textContent = '—';
+  }
+}
+
+function renderTabla(items) {
+  const tbody = document.getElementById('tabla-cuerpo');
+  if (!items.length) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="5">No hay artículos todavía. ¡Creá el primero!</td></tr>';
+    return;
+  }
+  const sorted = [...items].sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+  tbody.innerHTML = sorted.map(n => `
+    <tr>
+      <td class="td-title">
+        <span class="td-title-text">${escHtml(n.titulo)}</span>
+        <span class="td-excerpt">${escHtml(n.resumen || '')}</span>
+      </td>
+      <td><span class="badge ${catBadge(n.categoria)}">${escHtml(n.categoria || '—')}</span></td>
+      <td style="font-size:12px;color:var(--ink2);white-space:nowrap">${escHtml(n.autor || '—')}</td>
+      <td style="font-size:12px;color:var(--ink3);white-space:nowrap">${formatDate(n.fecha)}</td>
+      <td><div class="td-actions">
+        <button class="btn btn-outline btn-sm" onclick="abrirModalEditar('${escAttr(n.id)}')">Editar</button>
+        <button class="btn btn-danger btn-sm" onclick="pedirEliminar('${escAttr(n.id)}')">Eliminar</button>
+      </div></td>
+    </tr>
+  `).join('');
+}
+
+function filtrar() {
+  const q = document.getElementById('search-input').value.toLowerCase();
+  const cat = document.getElementById('cat-filter').value;
+  const filtrados = noticias.filter(n => {
+    const matchQ = !q || (n.titulo || '').toLowerCase().includes(q) || (n.resumen || '').toLowerCase().includes(q) || (n.autor || '').toLowerCase().includes(q);
+    const matchCat = !cat || n.categoria === cat;
+    return matchQ && matchCat;
+  });
+  renderTabla(filtrados);
+}
+
+function escHtml(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function escAttr(s) {
+  return String(s || '').replace(/'/g,'&#39;').replace(/"/g,'&quot;');
+}
+
+// MODAL
+function abrirModalNuevo() {
+  editandoId = null;
+  document.getElementById('modal-titulo').textContent = 'Nuevo artículo';
+  document.getElementById('f-titulo').value = '';
+  document.getElementById('f-resumen').value = '';
+  document.getElementById('f-categoria').value = '';
+  document.getElementById('f-fecha').value = new Date().toISOString().slice(0, 10);
+  document.getElementById('f-autor').value = '';
+  document.getElementById('f-cuerpo').value = '';
+  document.getElementById('modal-alert').style.display = 'none';
+  document.getElementById('modal-overlay').classList.add('open');
+  document.getElementById('f-titulo').focus();
+}
+
+function abrirModalEditar(id) {
+  const n = noticias.find(x => x.id === id);
+  if (!n) return;
+  editandoId = id;
+  document.getElementById('modal-titulo').textContent = 'Editar artículo';
+  document.getElementById('f-titulo').value = n.titulo || '';
+  document.getElementById('f-resumen').value = n.resumen || '';
+  document.getElementById('f-categoria').value = n.categoria || '';
+  document.getElementById('f-fecha').value = n.fecha || '';
+  document.getElementById('f-autor').value = n.autor || '';
+  document.getElementById('f-cuerpo').value = n.cuerpo || '';
+  document.getElementById('modal-alert').style.display = 'none';
+  document.getElementById('modal-overlay').classList.add('open');
+  document.getElementById('f-titulo').focus();
+}
+
+function cerrarModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  editandoId = null;
+}
+
+function guardarArticulo() {
+  const titulo = document.getElementById('f-titulo').value.trim();
+  const resumen = document.getElementById('f-resumen').value.trim();
+  const categoria = document.getElementById('f-categoria').value;
+  const fecha = document.getElementById('f-fecha').value;
+  const autor = document.getElementById('f-autor').value.trim();
+  const cuerpo = document.getElementById('f-cuerpo').value.trim();
+
+  if (!titulo || !resumen || !categoria || !fecha || !autor || !cuerpo) {
+    const alertEl = document.getElementById('modal-alert');
+    alertEl.textContent = 'Completá todos los campos obligatorios antes de guardar.';
+    alertEl.className = 'alert';
+    alertEl.style.background = '#fdf0ef';
+    alertEl.style.color = '#c0392b';
+    alertEl.style.borderColor = '#c0392b';
+    alertEl.style.display = 'block';
+    return;
+  }
+
+  if (editandoId) {
+    const idx = noticias.findIndex(x => x.id === editandoId);
+    if (idx !== -1) {
+      noticias[idx] = { ...noticias[idx], titulo, resumen, categoria, fecha, autor, cuerpo };
+    }
+  } else {
+    noticias.push({ id: generarId(), titulo, resumen, categoria, fecha, autor, cuerpo });
+  }
+
+  renderStats();
+  renderTabla(noticias);
+  cerrarModal();
+  descargarJSON(true);
+}
+
+function descargarJSON(desdeSave) {
+  const data = JSON.stringify({ noticias }, null, 2);
+  const blob = new Blob([data], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'noticias.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  const notice = document.getElementById('download-notice');
+  notice.style.display = 'block';
+  setTimeout(() => { notice.style.display = 'none'; }, 8000);
+}
+
+// DELETE
+function pedirEliminar(id) {
+  eliminandoId = id;
+  const n = noticias.find(x => x.id === id);
+  document.getElementById('confirm-msg').textContent = `¿Seguro que querés eliminar "${n ? n.titulo : 'este artículo'}"? Esta acción no se puede deshacer.`;
+  document.getElementById('confirm-overlay').classList.add('open');
+}
+
+function cerrarConfirm() {
+  document.getElementById('confirm-overlay').classList.remove('open');
+  eliminandoId = null;
+}
+
+function confirmarEliminar() {
+  if (!eliminandoId) return;
+  noticias = noticias.filter(x => x.id !== eliminandoId);
+  cerrarConfirm();
+  renderStats();
+  renderTabla(noticias);
+  descargarJSON(false);
+}
+
+// Close modal on overlay click
+document.getElementById('modal-overlay').addEventListener('click', function(e) {
+  if (e.target === this) cerrarModal();
+});
+document.getElementById('confirm-overlay').addEventListener('click', function(e) {
+  if (e.target === this) cerrarConfirm();
+});
+
+cargar();
+</script>
+</body>
+</html>
