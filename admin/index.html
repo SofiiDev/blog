@@ -129,9 +129,58 @@ textarea { resize: vertical; min-height: 160px; line-height: 1.6; }
 .settings-section { margin-bottom: 22px; padding-bottom: 22px; border-bottom: 1px solid var(--rule); }
 .settings-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
 .settings-section h3 { font-size: 13px; font-weight: 600; margin-bottom: 14px; color: var(--ink); }
+
+/* LOGIN */
+.login-screen { position: fixed; inset: 0; background: var(--paper); z-index: 999; display: flex; align-items: center; justify-content: center; padding: 24px; }
+.login-card { background: var(--surface); border: 1px solid var(--rule); width: 100%; max-width: 400px; }
+.login-header { padding: 32px 36px 24px; border-bottom: 1px solid var(--rule); text-align: center; }
+.login-logo { font-family: var(--serif); font-size: 28px; font-weight: 700; letter-spacing: -1px; color: var(--ink); margin-bottom: 4px; }
+.login-logo span { color: var(--accent); }
+.login-subtitle { font-size: 12px; color: var(--ink3); text-transform: uppercase; letter-spacing: 0.1em; }
+.login-body { padding: 28px 36px 32px; }
+.login-title { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 20px; }
+.login-error { font-size: 12px; color: var(--danger); background: var(--danger-light); border-left: 3px solid var(--danger); padding: 9px 12px; margin-bottom: 16px; display: none; }
+.login-form .form-row { margin-bottom: 16px; }
+.login-form label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink3); margin-bottom: 6px; }
+.login-form input { width: 100%; font-family: var(--sans); font-size: 14px; color: var(--ink); border: 1px solid var(--rule-strong); background: var(--paper); padding: 10px 12px; outline: none; transition: border-color .15s; }
+.login-form input:focus { border-color: var(--accent); background: #fff; }
+.login-btn { width: 100%; background: var(--accent); color: #fff; border: none; font-family: var(--sans); font-size: 14px; font-weight: 600; padding: 11px; cursor: pointer; margin-top: 8px; transition: opacity .15s; }
+.login-btn:hover:not(:disabled) { opacity: 0.85; }
+.login-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.login-hint { font-size: 11px; color: var(--ink3); text-align: center; margin-top: 14px; line-height: 1.5; }
 </style>
 </head>
 <body>
+
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="login-screen">
+  <div class="login-card">
+    <div class="login-header">
+      <div class="login-logo">InnovaDigital<span>.</span></div>
+      <div class="login-subtitle">Panel de Administración</div>
+    </div>
+    <div class="login-body">
+      <div class="login-title" id="login-title">Iniciar sesión</div>
+      <div class="login-error" id="login-error"></div>
+      <div class="login-form">
+        <div class="form-row" id="campo-usuario" style="display:none">
+          <label for="login-user">Usuario</label>
+          <input type="text" id="login-user" placeholder="Elegí un nombre de usuario" autocomplete="username">
+        </div>
+        <div class="form-row">
+          <label for="login-pass" id="login-pass-label">Contraseña</label>
+          <input type="password" id="login-pass" placeholder="Tu contraseña" autocomplete="current-password" onkeydown="if(event.key==='Enter')submitLogin()">
+        </div>
+        <div class="form-row" id="campo-confirmar" style="display:none">
+          <label for="login-pass2">Confirmar contraseña</label>
+          <input type="password" id="login-pass2" placeholder="Repetí la contraseña" autocomplete="new-password" onkeydown="if(event.key==='Enter')submitLogin()">
+        </div>
+        <button class="login-btn" id="login-btn" onclick="submitLogin()">Entrar</button>
+      </div>
+      <div class="login-hint" id="login-hint"></div>
+    </div>
+  </div>
+</div>
 
 <div class="topbar">
   <div class="topbar-inner">
@@ -143,6 +192,7 @@ textarea { resize: vertical; min-height: 160px; line-height: 1.6; }
       <span class="status-label" id="status-label">Sin configurar</span>
     </div>
     <button class="btn btn-sm" onclick="abrirConfig()" style="margin-left:12px;background:#fff;color:#0c0c0c;font-size:12px;font-weight:700;border:none;padding:7px 16px">⚙ Configuración</button>
+    <button class="btn btn-sm" onclick="cerrarSesion()" style="margin-left:6px;background:transparent;color:rgba(255,255,255,0.6);font-size:11px;font-weight:600;border:1px solid rgba(255,255,255,0.2);padding:5px 12px">Cerrar sesión</button>
     <a href="../index.html" class="topbar-link" style="margin-left:8px">← Ver el blog</a>
   </div>
 </div>
@@ -333,14 +383,142 @@ textarea { resize: vertical; min-height: 160px; line-height: 1.6; }
         <button class="btn btn-outline btn-sm" onclick="probarConexion()" id="btn-probar">Probar conexión</button>
       </div>
     </div>
+      <div class="settings-section">
+        <h3>Cambiar contraseña</h3>
+        <div class="form-row">
+          <label for="cfg-pass-actual">Contraseña actual *</label>
+          <input type="password" id="cfg-pass-actual" placeholder="Tu contraseña actual">
+        </div>
+        <div class="form-row">
+          <label for="cfg-pass-nueva">Nueva contraseña *</label>
+          <input type="password" id="cfg-pass-nueva" placeholder="Mínimo 6 caracteres">
+        </div>
+        <div class="form-row">
+          <label for="cfg-pass-confirmar">Confirmar nueva contraseña *</label>
+          <input type="password" id="cfg-pass-confirmar" placeholder="Repetí la nueva contraseña">
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="cambiarPassword()" id="btn-cambiar-pass">Cambiar contraseña</button>
+      </div>
+    </div>
     <div class="modal-footer">
       <button class="btn btn-outline" onclick="cerrarConfig()">Cancelar</button>
-      <button class="btn btn-primary" onclick="guardarConfig()">Guardar configuración</button>
+      <button class="btn btn-primary" onclick="guardarConfig()">Guardar configuración GitHub</button>
     </div>
   </div>
 </div>
 
 <script>
+// ─── AUTH ────────────────────────────────────────────────────────────────────
+
+const AUTH_KEY  = 'innovadigital_auth';   // hash almacenado
+const AUTH_USER = 'innovadigital_user';   // usuario almacenado
+const SESSION_KEY = 'innovadigital_sess'; // token de sesión
+
+async function sha256(text) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+function tokenSesion() {
+  return sessionStorage.getItem(SESSION_KEY);
+}
+
+function iniciarSesionStorage(usuario) {
+  const tok = crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2);
+  sessionStorage.setItem(SESSION_KEY, tok);
+  sessionStorage.setItem('innovadigital_usuario', usuario);
+}
+
+function cerrarSesion() {
+  sessionStorage.removeItem(SESSION_KEY);
+  sessionStorage.removeItem('innovadigital_usuario');
+  location.reload();
+}
+
+function hayCredenciales() {
+  return !!localStorage.getItem(AUTH_KEY);
+}
+
+async function submitLogin() {
+  const btn  = document.getElementById('login-btn');
+  const err  = document.getElementById('login-error');
+  const pass = document.getElementById('login-pass').value;
+  const pass2 = document.getElementById('login-pass2').value;
+  const user = document.getElementById('login-user').value.trim();
+  err.style.display = 'none';
+
+  if (!pass) { mostrarLoginError('Ingresá tu contraseña.'); return; }
+
+  if (!hayCredenciales()) {
+    // PRIMER USO: crear credenciales
+    if (!user) { mostrarLoginError('Ingresá un nombre de usuario.'); return; }
+    if (pass.length < 6) { mostrarLoginError('La contraseña debe tener al menos 6 caracteres.'); return; }
+    if (pass !== pass2) { mostrarLoginError('Las contraseñas no coinciden.'); return; }
+    btn.disabled = true; btn.textContent = 'Guardando…';
+    const hash = await sha256(user.toLowerCase() + ':' + pass);
+    localStorage.setItem(AUTH_KEY, hash);
+    localStorage.setItem(AUTH_USER, user);
+    iniciarSesionStorage(user);
+    mostrarAdmin();
+    return;
+  }
+
+  // LOGIN NORMAL
+  btn.disabled = true; btn.textContent = 'Verificando…';
+  const storedUser = localStorage.getItem(AUTH_USER) || '';
+  const hash = await sha256(storedUser.toLowerCase() + ':' + pass);
+  const storedHash = localStorage.getItem(AUTH_KEY);
+  if (hash === storedHash) {
+    iniciarSesionStorage(storedUser);
+    mostrarAdmin();
+  } else {
+    btn.disabled = false; btn.textContent = 'Entrar';
+    mostrarLoginError('Contraseña incorrecta.');
+    document.getElementById('login-pass').value = '';
+    document.getElementById('login-pass').focus();
+  }
+}
+
+function mostrarLoginError(msg) {
+  const err = document.getElementById('login-error');
+  err.textContent = msg;
+  err.style.display = 'block';
+  const btn = document.getElementById('login-btn');
+  btn.disabled = false;
+  btn.textContent = hayCredenciales() ? 'Entrar' : 'Crear cuenta';
+}
+
+function mostrarAdmin() {
+  document.getElementById('login-screen').style.display = 'none';
+  actualizarEstadoConexion();
+  cargar();
+}
+
+function initAuth() {
+  if (tokenSesion()) {
+    // Ya autenticado en esta sesión
+    mostrarAdmin();
+    return;
+  }
+  // Mostrar pantalla de login
+  const screen = document.getElementById('login-screen');
+  screen.style.display = 'flex';
+  if (!hayCredenciales()) {
+    // Primera vez — modo creación
+    document.getElementById('login-title').textContent = 'Crear acceso al panel';
+    document.getElementById('campo-usuario').style.display = 'block';
+    document.getElementById('campo-confirmar').style.display = 'block';
+    document.getElementById('login-pass-label').textContent = 'Elegí una contraseña';
+    document.getElementById('login-pass').placeholder = 'Mínimo 6 caracteres';
+    document.getElementById('login-btn').textContent = 'Crear cuenta';
+    document.getElementById('login-hint').textContent = 'Solo necesitás hacer esto una vez.';
+    document.getElementById('login-user').focus();
+  } else {
+    document.getElementById('login-hint').textContent = 'Podés cambiar tu contraseña desde Configuración una vez que entrés.';
+    document.getElementById('login-pass').focus();
+  }
+}
+
 // ─── CONFIG ─────────────────────────────────────────────────────────────────
 
 const CFG_KEY = 'innovadigital_cfg';
@@ -777,10 +955,36 @@ document.getElementById('modal-overlay').addEventListener('click', function(e) {
 document.getElementById('confirm-overlay').addEventListener('click', function(e) { if (e.target === this) cerrarConfirm(); });
 document.getElementById('settings-overlay').addEventListener('click', function(e) { if (e.target === this) cerrarConfig(); });
 
+async function cambiarPassword() {
+  const actual    = document.getElementById('cfg-pass-actual').value;
+  const nueva     = document.getElementById('cfg-pass-nueva').value;
+  const confirmar = document.getElementById('cfg-pass-confirmar').value;
+  const btn = document.getElementById('btn-cambiar-pass');
+
+  if (!actual || !nueva || !confirmar) { toast('Completá los tres campos.', 'error'); return; }
+  if (nueva.length < 6) { toast('La nueva contraseña debe tener al menos 6 caracteres.', 'error'); return; }
+  if (nueva !== confirmar) { toast('Las contraseñas nuevas no coinciden.', 'error'); return; }
+
+  btn.disabled = true; btn.textContent = 'Verificando…';
+  const storedUser = localStorage.getItem(AUTH_USER) || '';
+  const hashActual = await sha256(storedUser.toLowerCase() + ':' + actual);
+  if (hashActual !== localStorage.getItem(AUTH_KEY)) {
+    toast('La contraseña actual es incorrecta.', 'error');
+    btn.disabled = false; btn.textContent = 'Cambiar contraseña';
+    return;
+  }
+  const hashNueva = await sha256(storedUser.toLowerCase() + ':' + nueva);
+  localStorage.setItem(AUTH_KEY, hashNueva);
+  document.getElementById('cfg-pass-actual').value = '';
+  document.getElementById('cfg-pass-nueva').value = '';
+  document.getElementById('cfg-pass-confirmar').value = '';
+  btn.disabled = false; btn.textContent = 'Cambiar contraseña';
+  toast('Contraseña cambiada correctamente.', 'success');
+}
+
 // ─── INIT ─────────────────────────────────────────────────────────────────────
 
-actualizarEstadoConexion();
-cargar();
+initAuth();
 </script>
 </body>
 </html>
