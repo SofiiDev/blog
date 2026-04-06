@@ -49,30 +49,30 @@ a { text-decoration: none; color: inherit; }
 
 /* BREADCRUMB */
 .breadcrumb { border-bottom: 1px solid var(--rule); background: var(--surface); }
-.breadcrumb-inner { max-width: 1240px; margin: 0 auto; padding: 10px 32px; display: flex; align-items: center; gap: 8px; font-family: var(--sans); font-size: 12px; color: var(--ink3); }
+.breadcrumb-inner { max-width: 820px; margin: 0 auto; padding: 10px 24px; display: flex; align-items: center; gap: 8px; font-family: var(--sans); font-size: 12px; color: var(--ink3); }
 .breadcrumb a { color: var(--ink3); }
 .breadcrumb a:hover { color: var(--accent); }
 .breadcrumb .sep { color: var(--rule-strong); }
 
-/* ARTICLE LAYOUT */
-.article-wrap { max-width: 1240px; margin: 0 auto; padding: 40px 32px; display: grid; grid-template-columns: 1fr 300px; gap: 56px; }
+/* ARTICLE CARD */
+.article-page { padding: 36px 24px 56px; }
+.article-card { max-width: 780px; margin: 0 auto; background: var(--surface); border: 1px solid var(--rule); }
 
-/* ARTICLE MAIN */
-.article-main {}
-
-/* FEATURED IMAGE */
-.article-image { width: 100%; margin-bottom: 32px; }
-.article-image img { width: 100%; height: 420px; object-fit: cover; display: block; }
-.article-image-placeholder { width: 100%; height: 420px; display: flex; align-items: center; justify-content: center; }
+/* FEATURED IMAGE — inside card, top */
+.article-image img { width: 100%; height: 400px; object-fit: cover; display: block; }
+.article-image-placeholder { width: 100%; height: 340px; display: flex; align-items: center; justify-content: center; }
 .article-image-placeholder span { font-family: var(--sans); font-size: 11px; color: rgba(255,255,255,0.2); text-transform: uppercase; letter-spacing: 0.1em; }
+
+/* ARTICLE CONTENT */
+.article-content { padding: 36px 48px 48px; }
 
 /* ARTICLE HEADER */
 .article-header { margin-bottom: 28px; padding-bottom: 24px; border-bottom: 1px solid var(--rule); }
 .article-kicker { font-family: var(--sans); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); margin-bottom: 12px; display: inline-block; }
 .article-kicker:hover { opacity: 0.8; }
-.article-title { font-family: var(--serif); font-size: 36px; font-weight: 700; line-height: 1.12; letter-spacing: -1px; color: var(--ink); margin-bottom: 16px; }
-.article-deck { font-family: var(--sans); font-size: 18px; color: var(--ink2); line-height: 1.55; margin-bottom: 20px; font-weight: 300; }
-.article-byline { display: flex; gap: 20px; flex-wrap: wrap; font-family: var(--sans); font-size: 12px; color: var(--ink3); align-items: center; }
+.article-title { font-family: var(--serif); font-size: 34px; font-weight: 700; line-height: 1.12; letter-spacing: -1px; color: var(--ink); margin-bottom: 14px; }
+.article-deck { font-family: var(--sans); font-size: 17px; color: var(--ink2); line-height: 1.55; margin-bottom: 20px; font-weight: 300; }
+.article-byline { display: flex; gap: 16px; flex-wrap: wrap; font-family: var(--sans); font-size: 12px; color: var(--ink3); align-items: center; }
 .article-byline strong { color: var(--ink2); font-weight: 600; }
 .byline-sep { color: var(--rule-strong); }
 
@@ -81,16 +81,17 @@ a { text-decoration: none; color: inherit; }
 .article-body p { margin-bottom: 1.4em; }
 .article-body p:last-child { margin-bottom: 0; }
 
-/* SIDEBAR */
-.article-sidebar {}
-.sidebar-widget { border: 1px solid var(--rule); background: var(--surface); margin-bottom: 24px; }
-.sidebar-widget-head { padding: 12px 18px; border-bottom: 1px solid var(--rule); font-family: var(--sans); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink3); background: var(--paper); }
-.related-item { padding: 16px 18px; border-bottom: 1px solid var(--rule); display: flex; gap: 12px; }
-.related-item:last-child { border-bottom: none; }
-.related-img { width: 64px; height: 64px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-.related-img img { width: 100%; height: 100%; object-fit: cover; }
-.related-title { font-family: var(--serif); font-size: 13px; font-weight: 600; line-height: 1.3; color: var(--ink); margin-bottom: 4px; }
-.related-title:hover { color: var(--accent); }
+/* RELATED ARTICLES — below card */
+.related-section { max-width: 780px; margin: 32px auto 0; }
+.related-head { font-family: var(--sans); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink3); padding-bottom: 12px; border-bottom: 2px solid var(--rule-strong); margin-bottom: 0; }
+.related-grid { display: grid; grid-template-columns: repeat(2, 1fr); border: 1px solid var(--rule); border-top: none; background: var(--surface); }
+.related-item { display: flex; gap: 14px; padding: 18px 20px; border-bottom: 1px solid var(--rule); border-right: 1px solid var(--rule); text-decoration: none; }
+.related-item:nth-child(2n) { border-right: none; }
+.related-item:nth-last-child(-n+2) { border-bottom: none; }
+.related-item:hover .related-title { color: var(--accent); }
+.related-img { width: 72px; height: 72px; flex-shrink: 0; overflow: hidden; }
+.related-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.related-title { font-family: var(--serif); font-size: 14px; font-weight: 600; line-height: 1.3; color: var(--ink); margin-bottom: 4px; transition: color .15s; }
 .related-meta { font-family: var(--sans); font-size: 11px; color: var(--ink3); }
 .kicker-mini { font-family: var(--sans); font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 4px; }
 
@@ -186,7 +187,7 @@ footer { background: var(--surface); border-top: 3px solid var(--ink); padding: 
   </div>
 </div>
 
-<div id="article-content"><div class="loading">Cargando artículo…</div></div>
+<div class="article-page" id="article-content"><div class="loading">Cargando artículo…</div></div>
 
 <div class="nl-band">
   <div class="nl-inner">
@@ -314,23 +315,19 @@ function renderArticulo(a, relacionados) {
   });
 
   // image
-  let imgHtml = '';
-  if (a.imagen) {
-    imgHtml = `<div class="article-image"><img src="${escHtml(a.imagen)}" alt="${escHtml(a.titulo)}" onerror="this.parentElement.style.display='none'"></div>`;
-  } else {
-    imgHtml = `<div class="article-image"><div class="article-image-placeholder ${catColor(a.categoria)}"><span>InnovaDigital</span></div></div>`;
-  }
+  const imgHtml = a.imagen
+    ? `<div class="article-image"><img src="${escHtml(a.imagen)}" alt="${escHtml(a.titulo)}" onerror="this.parentElement.style.display='none'"></div>`
+    : `<div class="article-image"><div class="article-image-placeholder ${catColor(a.categoria)}"><span>InnovaDigital</span></div></div>`;
 
   // related
-  let relHtml = '';
-  if (relacionados.length) {
-    relHtml = `
-      <div class="sidebar-widget">
-        <div class="sidebar-widget-head">Artículos relacionados</div>
+  const relHtml = relacionados.length ? `
+    <div class="related-section">
+      <div class="related-head">Artículos relacionados</div>
+      <div class="related-grid">
         ${relacionados.map(r => `
-          <a href="articulo.html?id=${escHtml(r.id)}" class="related-item" style="display:flex;gap:12px;padding:16px 18px;border-bottom:1px solid var(--rule);text-decoration:none;">
-            <div class="related-img ${catColor(r.categoria)}" style="width:64px;height:64px;flex-shrink:0">
-              ${r.imagen ? `<img src="${escHtml(r.imagen)}" alt="" style="width:100%;height:100%;object-fit:cover">` : ''}
+          <a href="articulo.html?id=${escHtml(r.id)}" class="related-item">
+            <div class="related-img ${catColor(r.categoria)}">
+              ${r.imagen ? `<img src="${escHtml(r.imagen)}" alt="">` : ''}
             </div>
             <div>
               <div class="kicker-mini">${escHtml(r.categoria)}</div>
@@ -338,13 +335,13 @@ function renderArticulo(a, relacionados) {
               <div class="related-meta">${formatDate(r.fecha)}</div>
             </div>
           </a>`).join('')}
-      </div>`;
-  }
+      </div>
+    </div>` : '';
 
   document.getElementById('article-content').innerHTML = `
-    ${imgHtml}
-    <div class="article-wrap">
-      <article class="article-main">
+    <div class="article-card">
+      ${imgHtml}
+      <div class="article-content">
         <header class="article-header">
           <a href="categoria.html?cat=${encodeURIComponent(a.categoria||'')}" class="article-kicker">${escHtml(a.categoria||'General')}</a>
           <h1 class="article-title">${escHtml(a.titulo)}</h1>
@@ -358,11 +355,9 @@ function renderArticulo(a, relacionados) {
           </div>
         </header>
         <div class="article-body">${formatBody(a.cuerpo)}</div>
-      </article>
-      <aside class="article-sidebar">
-        ${relHtml}
-      </aside>
-    </div>`;
+      </div>
+    </div>
+    ${relHtml}`;
 }
 
 cargar();
