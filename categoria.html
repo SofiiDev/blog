@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InnovaDigital</title>
+<meta name="description" content="Artículos de InnovaDigital">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --ink: #0c0c0c; --ink2: #3d3d3d; --ink3: #8a8a8a;
+  --paper: #fafaf8; --surface: #ffffff;
+  --accent: #0046e5; --accent-light: #eef2ff;
+  --rule: #e4e4e0; --rule-strong: #c8c8c2;
+  --serif: 'Source Serif 4', Georgia, serif;
+  --sans: 'DM Sans', -apple-system, sans-serif;
+}
+body { font-family: var(--serif); background: var(--paper); color: var(--ink); line-height: 1.6; }
+a { text-decoration: none; color: inherit; }
+.sans { font-family: var(--sans); }
+
+/* TOP BAR */
+.topbar { border-bottom: 1px solid var(--rule); padding: 8px 0; background: var(--surface); }
+.topbar-inner { max-width: 1240px; margin: 0 auto; padding: 0 32px; display: flex; justify-content: space-between; align-items: center; }
+.topbar-date { font-family: var(--sans); font-size: 11px; color: var(--ink3); }
+.topbar-links { display: flex; gap: 20px; }
+.topbar-links a { font-family: var(--sans); font-size: 11px; color: var(--ink3); }
+.topbar-links a:hover { color: var(--accent); }
+.topbar-right { display: flex; gap: 10px; align-items: center; }
+.btn-sm { font-family: var(--sans); font-size: 11px; font-weight: 600; padding: 5px 14px; cursor: pointer; }
+.btn-outline { background: transparent; border: 1px solid var(--rule-strong); color: var(--ink2); }
+.btn-filled { background: var(--accent); border: 1px solid var(--accent); color: #fff; }
+
+/* MASTHEAD */
+.masthead { background: var(--surface); padding: 28px 0 20px; border-bottom: 3px solid var(--ink); }
+.masthead-inner { max-width: 1240px; margin: 0 auto; padding: 0 32px; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+.site-logo { font-family: var(--serif); font-size: 46px; font-weight: 700; letter-spacing: -2.5px; color: var(--ink); line-height: 1; }
+.site-logo .dot { color: var(--accent); }
+.site-tagline { font-family: var(--sans); font-size: 11px; color: var(--ink3); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 6px; }
+.masthead-search { display: flex; align-items: center; border: 1px solid var(--rule-strong); background: var(--paper); overflow: hidden; }
+.masthead-search input { border: none; background: transparent; outline: none; padding: 9px 14px; font-family: var(--sans); font-size: 13px; color: var(--ink); width: 220px; }
+.masthead-search input::placeholder { color: var(--ink3); }
+.masthead-search button { border: none; background: var(--accent); color: #fff; padding: 9px 14px; font-family: var(--sans); font-size: 12px; cursor: pointer; }
+
+/* PRIMARY NAV */
+.primary-nav { background: var(--surface); border-bottom: 1px solid var(--rule); }
+.pnav-inner { max-width: 1240px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; }
+.pnav-inner a { font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--ink2); padding: 13px 16px; border-bottom: 2px solid transparent; margin-bottom: -1px; letter-spacing: 0.02em; transition: color .15s; white-space: nowrap; }
+.pnav-inner a:hover { color: var(--ink); }
+.pnav-inner a.active { color: var(--accent); border-bottom-color: var(--accent); }
+.pnav-sep { flex: 1; }
+.pnav-tag { font-family: var(--sans); font-size: 11px; font-weight: 600; color: #fff; background: var(--accent); padding: 4px 12px; }
+
+/* TOPICS */
+.topics-strip { background: var(--paper); border-bottom: 1px solid var(--rule); overflow-x: auto; }
+.topics-inner { max-width: 1240px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; white-space: nowrap; }
+.topics-label { font-family: var(--sans); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink3); padding: 8px 16px 8px 0; border-right: 1px solid var(--rule); margin-right: 4px; }
+.topics-inner a { font-family: var(--sans); font-size: 12px; color: var(--ink2); padding: 8px 12px; }
+.topics-inner a:hover { color: var(--accent); }
+.topics-inner a.active { color: var(--accent); font-weight: 600; }
+
+/* CATEGORY HEADER */
+.cat-header { background: var(--surface); border-bottom: 1px solid var(--rule); padding: 28px 0; }
+.cat-header-inner { max-width: 1240px; margin: 0 auto; padding: 0 32px; }
+.cat-kicker { font-family: var(--sans); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); margin-bottom: 8px; }
+.cat-title { font-family: var(--serif); font-size: 36px; font-weight: 700; letter-spacing: -1px; color: var(--ink); line-height: 1.1; margin-bottom: 8px; }
+.cat-desc { font-family: var(--sans); font-size: 14px; color: var(--ink2); max-width: 560px; }
+.cat-count { font-family: var(--sans); font-size: 12px; color: var(--ink3); margin-top: 10px; }
+
+/* PAGE */
+.page { max-width: 1240px; margin: 0 auto; padding: 36px 32px; }
+
+/* ARTICLE GRID */
+.article-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--rule); background: var(--surface); margin-bottom: 2px; }
+.article-card { border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.article-card:nth-child(3n) { border-right: none; }
+.article-img { height: 140px; display: flex; align-items: center; justify-content: center; }
+.article-img span { font-family: var(--sans); font-size: 10px; color: rgba(255,255,255,0.15); text-transform: uppercase; letter-spacing: 0.08em; }
+.article-body { padding: 18px 20px 20px; }
+.kicker { font-family: var(--sans); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.13em; color: var(--accent); margin-bottom: 8px; }
+.article-title { font-family: var(--serif); font-size: 17px; font-weight: 700; line-height: 1.25; letter-spacing: -0.3px; color: var(--ink); margin-bottom: 8px; }
+.article-title:hover { color: var(--accent); cursor: pointer; }
+.article-excerpt { font-family: var(--sans); font-size: 12px; color: var(--ink3); line-height: 1.6; margin-bottom: 12px; }
+.byline { font-family: var(--sans); font-size: 11px; color: var(--ink3); display: flex; gap: 12px; flex-wrap: wrap; border-top: 1px solid var(--rule); padding-top: 10px; }
+.byline strong { color: var(--ink2); }
+
+/* FEATURED (first article) */
+.article-featured { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 360px; border-right: none; }
+.article-featured .article-img { height: 260px; }
+.article-featured .article-body { padding: 28px 32px; }
+.article-featured .article-title { font-size: 26px; line-height: 1.15; letter-spacing: -0.8px; margin-bottom: 12px; }
+.article-featured .article-excerpt { font-size: 14px; line-height: 1.65; margin-bottom: 16px; }
+
+/* EMPTY */
+.empty-state { text-align: center; padding: 64px 32px; border: 1px dashed var(--rule-strong); font-family: var(--sans); }
+.empty-state h3 { font-size: 16px; color: var(--ink2); margin-bottom: 8px; }
+.empty-state p { font-size: 13px; color: var(--ink3); }
+.empty-state a { color: var(--accent); font-weight: 600; }
+
+/* LOADING */
+.loading { text-align: center; padding: 48px; font-family: var(--sans); color: var(--ink3); font-size: 13px; }
+
+/* COLORS */
+.cat-ia        { background: #0c1a3a; }
+.cat-logistica { background: #1a3a20; }
+.cat-energia   { background: #2a1a3a; }
+.cat-ciber     { background: #3a1a1a; }
+.cat-salud     { background: #1a2a3a; }
+.cat-liderazgo { background: #2a2a1a; }
+.cat-industria { background: #1a3028; }
+.cat-default   { background: #1e2228; }
+
+/* NEWSLETTER */
+.nl-band { background: var(--ink); padding: 36px 32px; }
+.nl-inner { max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center; }
+.nl-text h2 { font-family: var(--serif); font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+.nl-text p { font-family: var(--sans); font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.6; }
+.nl-form { display: flex; }
+.nl-form input { padding: 11px 18px; border: none; font-family: var(--sans); font-size: 13px; width: 260px; outline: none; }
+.nl-form button { background: var(--accent); color: #fff; border: none; padding: 11px 22px; font-family: var(--sans); font-size: 13px; font-weight: 600; cursor: pointer; }
+
+/* FOOTER */
+footer { background: var(--surface); border-top: 3px solid var(--ink); padding: 40px 0 24px; }
+.footer-inner { max-width: 1240px; margin: 0 auto; padding: 0 32px; display: grid; grid-template-columns: 220px 1fr 1fr 1fr; gap: 40px; }
+.footer-brand .site-logo { font-size: 24px; letter-spacing: -1px; margin-bottom: 10px; }
+.footer-brand p { font-family: var(--sans); font-size: 12px; color: var(--ink3); line-height: 1.65; }
+.footer-col h4 { font-family: var(--sans); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink3); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--rule); }
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.footer-col a { font-family: var(--sans); font-size: 13px; color: var(--ink2); }
+.footer-col a:hover { color: var(--accent); }
+.footer-bottom { max-width: 1240px; margin: 28px auto 0; padding: 16px 32px 0; border-top: 1px solid var(--rule); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+.footer-bottom span, .footer-bottom a { font-family: var(--sans); font-size: 11px; color: var(--ink3); }
+.flinks { display: flex; gap: 20px; }
+
+/* READ MORE */
+.read-more-link { font-family: var(--sans); font-size: 12px; font-weight: 600; color: var(--accent); display: inline-flex; align-items: center; gap: 4px; margin-top: 12px; }
+.read-more-link::after { content: '→'; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="topbar-date" id="fecha-hoy"></span>
+    <div class="topbar-links">
+      <a href="#">Sobre InnovaDigital</a>
+      <a href="#">Newsletter</a>
+      <a href="admin/index.html">Panel Admin</a>
+    </div>
+    <div class="topbar-right">
+      <button class="btn-sm btn-outline">Iniciar sesión</button>
+      <button class="btn-sm btn-filled">Suscribirse gratis</button>
+    </div>
+  </div>
+</div>
+
+<div class="masthead">
+  <div class="masthead-inner">
+    <a href="index.html">
+      <div class="site-logo">InnovaDigital<span class="dot">.</span></div>
+      <div class="site-tagline">Innovación · Industria 4.0 · Transformación Digital</div>
+    </a>
+    <div class="masthead-search">
+      <input type="text" id="search-input" placeholder="Buscar artículos, temas, autores…">
+      <button onclick="buscar()">Buscar</button>
+    </div>
+  </div>
+</div>
+
+<nav class="primary-nav">
+  <div class="pnav-inner">
+    <a href="index.html">Inicio</a>
+    <a href="categoria.html?cat=IA+Industrial">IA Industrial</a>
+    <a href="categoria.html?cat=Logística">Logística</a>
+    <a href="categoria.html?cat=Energía">Energía</a>
+    <a href="categoria.html?cat=Ciberseguridad">Ciberseguridad</a>
+    <a href="categoria.html?cat=Salud+Digital">Salud Digital</a>
+    <a href="categoria.html?cat=Liderazgo">Liderazgo</a>
+    <a href="categoria.html?cat=Industria+4.0">Industria 4.0</a>
+    <div class="pnav-sep"></div>
+    <span class="pnav-tag">Nuevo: Podcast semanal</span>
+  </div>
+</nav>
+
+<div class="topics-strip">
+  <div class="topics-inner">
+    <span class="topics-label">Temas</span>
+    <a href="categoria.html?cat=IA+Industrial">IA Industrial</a>
+    <a href="categoria.html?cat=Industria+4.0">Industria 4.0</a>
+    <a href="categoria.html?cat=Logística">Logística</a>
+    <a href="categoria.html?cat=Energía">Energía</a>
+    <a href="categoria.html?cat=Salud+Digital">Salud Digital</a>
+    <a href="categoria.html?cat=Ciberseguridad">Ciberseguridad</a>
+    <a href="categoria.html?cat=Liderazgo">Liderazgo</a>
+  </div>
+</div>
+
+<div class="cat-header">
+  <div class="cat-header-inner">
+    <div class="cat-kicker">Categoría</div>
+    <div class="cat-title" id="cat-title">—</div>
+    <div class="cat-desc" id="cat-desc"></div>
+    <div class="cat-count" id="cat-count"></div>
+  </div>
+</div>
+
+<div class="page">
+  <div id="articulos-container"><div class="loading">Cargando artículos…</div></div>
+</div>
+
+<div class="nl-band">
+  <div class="nl-inner">
+    <div class="nl-text">
+      <h2>Newsletter InnovaDigital</h2>
+      <p>Los análisis más relevantes sobre transformación digital, cada semana en tu bandeja.</p>
+    </div>
+    <div class="nl-form">
+      <input type="email" placeholder="tu@empresa.com">
+      <button>Suscribirme →</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="index.html"><div class="site-logo">Innova<span class="dot">D</span></div></a>
+      <p>El blog de referencia en transformación digital para líderes de la industria en América Latina.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Categorías</h4>
+      <ul>
+        <li><a href="categoria.html?cat=IA+Industrial">IA Industrial</a></li>
+        <li><a href="categoria.html?cat=Logística">Logística</a></li>
+        <li><a href="categoria.html?cat=Energía">Energía</a></li>
+        <li><a href="categoria.html?cat=Ciberseguridad">Ciberseguridad</a></li>
+        <li><a href="categoria.html?cat=Salud+Digital">Salud Digital</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Más temas</h4>
+      <ul>
+        <li><a href="categoria.html?cat=Liderazgo">Liderazgo</a></li>
+        <li><a href="categoria.html?cat=Industria+4.0">Industria 4.0</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>InnovaDigital</h4>
+      <ul>
+        <li><a href="#">Acerca del blog</a></li>
+        <li><a href="#">Equipo editorial</a></li>
+        <li><a href="admin/index.html">Panel Admin</a></li>
+        <li><a href="#">LinkedIn</a></li>
+        <li><a href="#">Privacidad</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 InnovaDigital · Buenos Aires, Argentina</span>
+    <div class="flinks"><a href="#">RSS</a><a href="#">Términos</a><a href="#">Privacidad</a></div>
+  </div>
+</footer>
+
+<script>
+const meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const hoy = new Date();
+document.getElementById('fecha-hoy').textContent = `${['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'][hoy.getDay()]}, ${hoy.getDate()} de ${meses[hoy.getMonth()]} de ${hoy.getFullYear()}`;
+
+const CAT_INFO = {
+  'IA Industrial':  { desc: 'Casos de uso, tendencias y análisis sobre inteligencia artificial aplicada a la industria y manufactura.' },
+  'Logística':      { desc: 'Transformación de cadenas de suministro, automatización logística y visibilidad en tiempo real.' },
+  'Energía':        { desc: 'Innovación en el sector energético: gemelos digitales, redes inteligentes y transición energética.' },
+  'Ciberseguridad': { desc: 'Seguridad industrial, convergencia OT/IT y protección de infraestructuras críticas.' },
+  'Salud Digital':  { desc: 'IA diagnóstica, hospitales conectados y la transformación digital del sector salud.' },
+  'Liderazgo':      { desc: 'Habilidades, estrategias y casos de líderes que impulsan la transformación digital.' },
+  'Industria 4.0':  { desc: 'Fábricas inteligentes, IoT industrial y la cuarta revolución industrial en América Latina.' },
+};
+
+function catColor(cat) {
+  const m = { 'IA Industrial':'cat-ia','Logística':'cat-logistica','Energía':'cat-energia','Ciberseguridad':'cat-ciber','Salud Digital':'cat-salud','Liderazgo':'cat-liderazgo','Industria 4.0':'cat-industria' };
+  return m[cat] || 'cat-default';
+}
+
+function formatDate(d) {
+  if (!d) return '';
+  const dt = new Date(d + 'T00:00:00');
+  return `${dt.getDate()} de ${meses[dt.getMonth()]}. ${dt.getFullYear()}`;
+}
+
+function readTime(body) {
+  return Math.max(1, Math.round(((body||'').split(' ').length) / 200)) + ' min';
+}
+
+function escHtml(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// Leer categoría de la URL
+const params = new URLSearchParams(window.location.search);
+const categoria = params.get('cat') || '';
+
+// Actualizar título de página y meta
+document.title = categoria ? `${categoria} — InnovaDigital` : 'InnovaDigital';
+
+// Marcar nav activo
+document.querySelectorAll('.pnav-inner a, .topics-inner a').forEach(a => {
+  try {
+    const u = new URL(a.href);
+    if (u.searchParams.get('cat') === categoria) a.classList.add('active');
+  } catch {}
+});
+
+// Actualizar cabecera
+document.getElementById('cat-title').textContent = categoria || 'Todos los artículos';
+const info = CAT_INFO[categoria];
+if (info) document.getElementById('cat-desc').textContent = info.desc;
+
+async function cargar() {
+  try {
+    const res = await fetch('content/noticias.json?t=' + Date.now());
+    const data = await res.json();
+    let noticias = data.noticias || [];
+    if (categoria) noticias = noticias.filter(n => n.categoria === categoria);
+    noticias.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+
+    document.getElementById('cat-count').textContent =
+      noticias.length === 0 ? 'Sin artículos publicados aún' :
+      noticias.length === 1 ? '1 artículo' : `${noticias.length} artículos`;
+
+    renderArticulos(noticias);
+  } catch(e) {
+    document.getElementById('articulos-container').innerHTML =
+      '<div class="empty-state"><h3>Error al cargar</h3><p>No se pudo cargar el contenido.</p></div>';
+  }
+}
+
+function renderArticulos(noticias) {
+  const el = document.getElementById('articulos-container');
+  if (!noticias.length) {
+    el.innerHTML = `<div class="empty-state">
+      <h3>No hay artículos en esta categoría todavía</h3>
+      <p>Podés publicar artículos desde el <a href="admin/index.html">panel de administración</a>.</p>
+    </div>`;
+    return;
+  }
+
+  const [primero, ...resto] = noticias;
+
+  const featured = `
+    <div class="article-grid" style="margin-bottom:2px">
+      <div class="article-card article-featured">
+        <div class="article-img ${catColor(primero.categoria)}" style="height:260px">
+          <span>Imagen</span>
+        </div>
+        <div class="article-body">
+          <div class="kicker">${escHtml(primero.categoria)}</div>
+          <div class="article-title" style="font-size:26px;letter-spacing:-0.8px">${escHtml(primero.titulo)}</div>
+          <div class="article-excerpt" style="font-size:14px">${escHtml(primero.resumen || '')}</div>
+          <div class="byline">
+            <span>Por <strong>${escHtml(primero.autor || 'Redacción')}</strong></span>
+            <span>${formatDate(primero.fecha)}</span>
+            <span>${readTime(primero.cuerpo)}</span>
+          </div>
+          <a href="#" class="read-more-link">Leer artículo completo</a>
+        </div>
+      </div>
+    </div>`;
+
+  // Agrupar el resto en filas de 3
+  let grids = '';
+  for (let i = 0; i < resto.length; i += 3) {
+    const chunk = resto.slice(i, i + 3);
+    grids += `<div class="article-grid" style="border-top:none;margin-bottom:2px">
+      ${chunk.map(n => `
+        <div class="article-card">
+          <div class="article-img ${catColor(n.categoria)}"><span>Imagen</span></div>
+          <div class="article-body">
+            <div class="kicker">${escHtml(n.categoria)}</div>
+            <div class="article-title">${escHtml(n.titulo)}</div>
+            <div class="article-excerpt">${escHtml(n.resumen || '')}</div>
+            <div class="byline">
+              <span>Por <strong>${escHtml(n.autor || 'Redacción')}</strong></span>
+              <span>${formatDate(n.fecha)}</span>
+              <span>${readTime(n.cuerpo)}</span>
+            </div>
+            <a href="#" class="read-more-link">Leer más</a>
+          </div>
+        </div>`).join('')}
+    </div>`;
+  }
+
+  el.innerHTML = featured + grids;
+}
+
+function buscar() {
+  const q = document.getElementById('search-input').value;
+  if (q.trim()) alert('Función de búsqueda: podés implementarla con Pagefind en Netlify.');
+}
+
+cargar();
+</script>
+</body>
+</html>

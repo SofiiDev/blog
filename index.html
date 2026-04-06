@@ -207,13 +207,13 @@ footer { background: var(--surface); border-top: 3px solid var(--ink); padding: 
 <nav class="primary-nav">
   <div class="pnav-inner">
     <a href="index.html" class="active">Inicio</a>
-    <a href="#">Noticias</a>
-    <a href="#">Análisis</a>
-    <a href="#">Industrias</a>
-    <a href="#">Tecnología</a>
-    <a href="#">Casos de Éxito</a>
-    <a href="#">Opinión</a>
-    <a href="#">Eventos</a>
+    <a href="categoria.html?cat=IA+Industrial">IA Industrial</a>
+    <a href="categoria.html?cat=Logística">Logística</a>
+    <a href="categoria.html?cat=Energía">Energía</a>
+    <a href="categoria.html?cat=Ciberseguridad">Ciberseguridad</a>
+    <a href="categoria.html?cat=Salud+Digital">Salud Digital</a>
+    <a href="categoria.html?cat=Liderazgo">Liderazgo</a>
+    <a href="categoria.html?cat=Industria+4.0">Industria 4.0</a>
     <div class="pnav-sep"></div>
     <span class="pnav-tag">Nuevo: Podcast semanal</span>
   </div>
@@ -222,10 +222,13 @@ footer { background: var(--surface); border-top: 3px solid var(--ink); padding: 
 <div class="topics-strip">
   <div class="topics-inner">
     <span class="topics-label">Temas</span>
-    <a href="#">IA Industrial</a><a href="#">IoT</a><a href="#">Industria 4.0</a>
-    <a href="#">Manufactura</a><a href="#">Logística</a><a href="#">Energía</a>
-    <a href="#">Salud Digital</a><a href="#">Ciberseguridad</a><a href="#">Finanzas</a>
-    <a href="#">Liderazgo</a><a href="#">Regulación</a><a href="#">Agro</a>
+    <a href="categoria.html?cat=IA+Industrial">IA Industrial</a>
+    <a href="categoria.html?cat=Industria+4.0">Industria 4.0</a>
+    <a href="categoria.html?cat=Logística">Logística</a>
+    <a href="categoria.html?cat=Energía">Energía</a>
+    <a href="categoria.html?cat=Salud+Digital">Salud Digital</a>
+    <a href="categoria.html?cat=Ciberseguridad">Ciberseguridad</a>
+    <a href="categoria.html?cat=Liderazgo">Liderazgo</a>
   </div>
 </div>
 
@@ -279,11 +282,11 @@ footer { background: var(--surface); border-top: 3px solid var(--ink); padding: 
     </div>
     <div class="footer-col">
       <h4>Secciones</h4>
-      <ul><li><a href="#">Noticias</a></li><li><a href="#">Análisis</a></li><li><a href="#">Industrias</a></li><li><a href="#">Casos de Éxito</a></li><li><a href="#">Opinión</a></li></ul>
+      <ul><li><a href="categoria.html?cat=IA+Industrial">IA Industrial</a></li><li><a href="categoria.html?cat=Logística">Logística</a></li><li><a href="categoria.html?cat=Energía">Energía</a></li><li><a href="categoria.html?cat=Ciberseguridad">Ciberseguridad</a></li><li><a href="categoria.html?cat=Salud+Digital">Salud Digital</a></li></ul>
     </div>
     <div class="footer-col">
       <h4>Temas</h4>
-      <ul><li><a href="#">IA Industrial</a></li><li><a href="#">IoT</a></li><li><a href="#">Industria 4.0</a></li><li><a href="#">Ciberseguridad</a></li><li><a href="#">Liderazgo Digital</a></li></ul>
+      <ul><li><a href="categoria.html?cat=Liderazgo">Liderazgo</a></li><li><a href="categoria.html?cat=Industria+4.0">Industria 4.0</a></li></ul>
     </div>
     <div class="footer-col">
       <h4>InnovaDigital</h4>
@@ -447,10 +450,10 @@ function renderSidebar(noticias) {
   noticias.forEach(n => { if(n.categoria) cats[n.categoria] = (cats[n.categoria]||0)+1; });
   const catEl = document.getElementById('widget-categorias');
   catEl.innerHTML = Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([cat, count]) => `
-  <div class="cat-item">
+  <a href="categoria.html?cat=${encodeURIComponent(cat)}" class="cat-item" style="display:flex;justify-content:space-between;align-items:center;padding:11px 18px;border-bottom:1px solid var(--rule);text-decoration:none;">
     <span class="cat-name">${cat}</span>
     <span class="cat-badge">${count}</span>
-  </div>`).join('');
+  </a>`).join('');
 }
 
 function buscar() {
