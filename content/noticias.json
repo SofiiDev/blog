@@ -1,3 +1,13 @@
 {
-  "noticias": []
+  "noticias": [
+    {
+      "id": "mnn5oyybeuye9",
+      "titulo": "El precio de la lechuga",
+      "resumen": "El precio creciente de la lechuga",
+      "categoria": "IA Industrial",
+      "fecha": "2026-04-06",
+      "autor": "Carola",
+      "cuerpo": "El precio creciente de la lechuga"
+    }
+  ]
 }
