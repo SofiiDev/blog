@@ -351,19 +351,21 @@ function renderArticulos(noticias) {
   const featured = `
     <div class="article-grid" style="margin-bottom:2px">
       <div class="article-card article-featured">
-        <div class="article-img ${catColor(primero.categoria)}" style="height:260px">
-          <span>Imagen</span>
-        </div>
+        <a href="articulo.html?id=${escHtml(primero.id)}" style="display:block">
+          ${primero.imagen
+            ? `<img src="${escHtml(primero.imagen)}" alt="${escHtml(primero.titulo)}" style="width:100%;height:260px;object-fit:cover;display:block">`
+            : `<div class="article-img ${catColor(primero.categoria)}" style="height:260px"><span>Imagen</span></div>`}
+        </a>
         <div class="article-body">
           <div class="kicker">${escHtml(primero.categoria)}</div>
-          <div class="article-title" style="font-size:26px;letter-spacing:-0.8px">${escHtml(primero.titulo)}</div>
+          <a href="articulo.html?id=${escHtml(primero.id)}"><div class="article-title" style="font-size:26px;letter-spacing:-0.8px">${escHtml(primero.titulo)}</div></a>
           <div class="article-excerpt" style="font-size:14px">${escHtml(primero.resumen || '')}</div>
           <div class="byline">
             <span>Por <strong>${escHtml(primero.autor || 'Redacción')}</strong></span>
             <span>${formatDate(primero.fecha)}</span>
             <span>${readTime(primero.cuerpo)}</span>
           </div>
-          <a href="#" class="read-more-link">Leer artículo completo</a>
+          <a href="articulo.html?id=${escHtml(primero.id)}" class="read-more-link">Leer artículo completo</a>
         </div>
       </div>
     </div>`;
@@ -375,17 +377,21 @@ function renderArticulos(noticias) {
     grids += `<div class="article-grid" style="border-top:none;margin-bottom:2px">
       ${chunk.map(n => `
         <div class="article-card">
-          <div class="article-img ${catColor(n.categoria)}"><span>Imagen</span></div>
+          <a href="articulo.html?id=${escHtml(n.id)}" style="display:block">
+            ${n.imagen
+              ? `<img src="${escHtml(n.imagen)}" alt="${escHtml(n.titulo)}" style="width:100%;height:140px;object-fit:cover;display:block">`
+              : `<div class="article-img ${catColor(n.categoria)}"><span>Imagen</span></div>`}
+          </a>
           <div class="article-body">
             <div class="kicker">${escHtml(n.categoria)}</div>
-            <div class="article-title">${escHtml(n.titulo)}</div>
+            <a href="articulo.html?id=${escHtml(n.id)}"><div class="article-title">${escHtml(n.titulo)}</div></a>
             <div class="article-excerpt">${escHtml(n.resumen || '')}</div>
             <div class="byline">
               <span>Por <strong>${escHtml(n.autor || 'Redacción')}</strong></span>
               <span>${formatDate(n.fecha)}</span>
               <span>${readTime(n.cuerpo)}</span>
             </div>
-            <a href="#" class="read-more-link">Leer más</a>
+            <a href="articulo.html?id=${escHtml(n.id)}" class="read-more-link">Leer más</a>
           </div>
         </div>`).join('')}
     </div>`;

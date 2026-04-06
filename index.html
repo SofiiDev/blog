@@ -353,46 +353,48 @@ function renderHero(noticias) {
   el.innerHTML = `
   <div class="hero-block">
     <div class="hero-main">
-      <div class="hero-img ${catColor(main.categoria)}">
-        <div class="hero-img-grid"></div>
-        <span class="hero-img-label">Imagen del artículo</span>
-      </div>
+      ${main.imagen
+        ? `<a href="articulo.html?id=${main.id}"><img src="${main.imagen}" alt="${main.titulo}" style="width:100%;height:280px;object-fit:cover;display:block"></a>`
+        : `<div class="hero-img ${catColor(main.categoria)}"><div class="hero-img-grid"></div><span class="hero-img-label">Imagen del artículo</span></div>`}
       <div class="hero-body">
         <div class="kicker">${main.categoria || 'General'}</div>
-        <div class="hero-title">${main.titulo}</div>
+        <a href="articulo.html?id=${main.id}"><div class="hero-title">${main.titulo}</div></a>
         <div class="hero-deck">${main.resumen || ''}</div>
         <div class="byline">
           <span>Por <strong>${main.autor || 'Redacción'}</strong></span>
           <span>${formatDate(main.fecha)}</span>
           <span>${readTime(main.cuerpo)}</span>
         </div>
-        <a href="#" class="read-more-link">Leer artículo completo</a>
+        <a href="articulo.html?id=${main.id}" class="read-more-link">Leer artículo completo</a>
       </div>
     </div>
     <div class="hero-second">
-      <div class="hero-second-img ${sec ? catColor(sec.categoria) : 'cat-default'}">
-        <span style="font-family:var(--sans);font-size:10px;color:rgba(255,255,255,0.15);letter-spacing:0.1em;text-transform:uppercase">${sec ? 'Imagen' : ''}</span>
-      </div>
+      ${sec
+        ? (sec.imagen
+            ? `<a href="articulo.html?id=${sec.id}"><img src="${sec.imagen}" alt="${sec.titulo}" style="width:100%;height:190px;object-fit:cover;display:block"></a>`
+            : `<div class="hero-second-img ${catColor(sec.categoria)}"><span style="font-family:var(--sans);font-size:10px;color:rgba(255,255,255,0.15);letter-spacing:0.1em;text-transform:uppercase">Imagen</span></div>`)
+        : `<div class="hero-second-img cat-default"></div>`}
       <div class="hero-second-body">
         ${sec ? `<div class="kicker">${sec.categoria || ''}</div>
-        <div class="hero-title">${sec.titulo}</div>
+        <a href="articulo.html?id=${sec.id}"><div class="hero-title">${sec.titulo}</div></a>
         <div class="byline"><span>Por <strong>${sec.autor || 'Redacción'}</strong></span><span>${formatDate(sec.fecha)}</span></div>
-        <a href="#" class="read-more-link">Leer más</a>` : '<div style="font-family:var(--sans);font-size:12px;color:var(--ink3);padding:12px 0">Agregá más artículos desde el panel.</div>'}
+        <a href="articulo.html?id=${sec.id}" class="read-more-link">Leer más</a>` : '<div style="font-family:var(--sans);font-size:12px;color:var(--ink3);padding:12px 0">Agregá más artículos desde el panel.</div>'}
       </div>
       <div class="hero-third">
         ${ter ? `<div class="kicker">${ter.categoria || ''}</div>
-        <div class="hero-title" style="font-size:14px;line-height:1.3">${ter.titulo}</div>
+        <a href="articulo.html?id=${ter.id}"><div class="hero-title" style="font-size:14px;line-height:1.3">${ter.titulo}</div></a>
         <div class="byline" style="font-size:10px"><span>${formatDate(ter.fecha)}</span></div>` : ''}
       </div>
     </div>
     <div class="hero-rail">
       <div class="rail-head">Lo más leído esta semana</div>
       ${rail.map(n => `
-      <div class="rail-item">
-        <div class="kicker" style="font-size:9px">${n.categoria || ''}</div>
-        <div class="hero-title" style="font-size:13px;line-height:1.35">${n.titulo}</div>
-        <div class="byline" style="font-size:10px;padding-top:8px;gap:8px"><span>${formatDate(n.fecha)}</span><span>${readTime(n.cuerpo)}</span></div>
-      </div>`).join('')}
+      <a href="articulo.html?id=${n.id}" style="text-decoration:none">
+        <div class="rail-item">
+          <div class="kicker" style="font-size:9px">${n.categoria || ''}</div>
+          <div class="hero-title" style="font-size:13px;line-height:1.35">${n.titulo}</div>
+          <div class="byline" style="font-size:10px;padding-top:8px;gap:8px"><span>${formatDate(n.fecha)}</span><span>${readTime(n.cuerpo)}</span></div>
+        </div></a>`).join('')}
     </div>
   </div>`;
 }
@@ -403,10 +405,14 @@ function renderBottomGrid(noticias) {
   if (!items.length) { el.innerHTML = ''; return; }
   el.innerHTML = `<div class="bottom-grid">${items.map(n => `
     <div class="bc">
-      <div class="bc-img ${catColor(n.categoria)}"><span style="font-family:var(--sans);font-size:10px;color:rgba(255,255,255,0.15);text-transform:uppercase">Imagen</span></div>
+      <a href="articulo.html?id=${n.id}" style="display:block">
+        ${n.imagen
+          ? `<img src="${n.imagen}" alt="${n.titulo}" style="width:100%;height:110px;object-fit:cover;display:block">`
+          : `<div class="bc-img ${catColor(n.categoria)}"><span style="font-family:var(--sans);font-size:10px;color:rgba(255,255,255,0.15);text-transform:uppercase">Imagen</span></div>`}
+      </a>
       <div class="bc-body">
         <div class="kicker">${n.categoria || ''}</div>
-        <div class="hero-title" style="font-size:15px;line-height:1.3;margin-bottom:8px">${n.titulo}</div>
+        <a href="articulo.html?id=${n.id}"><div class="hero-title" style="font-size:15px;line-height:1.3;margin-bottom:8px">${n.titulo}</div></a>
         <div class="bc-excerpt">${n.resumen || ''}</div>
         <div class="byline" style="margin-top:10px;font-size:10px"><span><strong>${n.autor || 'Redacción'}</strong></span><span>${formatDate(n.fecha)}</span></div>
       </div>
@@ -419,10 +425,14 @@ function renderRecientes(noticias) {
   if (!items.length) { el.innerHTML = ''; return; }
   el.innerHTML = items.map(n => `
   <div class="recent-item">
-    <div class="recent-item-img ${catColor(n.categoria)}"><span>Imagen</span></div>
+    <a href="articulo.html?id=${n.id}" style="display:flex;align-items:center;justify-content:center;border-right:1px solid var(--rule);min-height:120px;overflow:hidden;text-decoration:none">
+      ${n.imagen
+        ? `<img src="${n.imagen}" alt="${n.titulo}" style="width:140px;height:120px;object-fit:cover;display:block">`
+        : `<div class="recent-item-img ${catColor(n.categoria)}" style="width:140px;height:120px;display:flex;align-items:center;justify-content:center"><span>Imagen</span></div>`}
+    </a>
     <div class="recent-item-body">
       <div class="kicker">${n.categoria || ''}</div>
-      <div class="hero-title" style="font-size:16px;line-height:1.3;margin-bottom:6px">${n.titulo}</div>
+      <a href="articulo.html?id=${n.id}"><div class="hero-title" style="font-size:16px;line-height:1.3;margin-bottom:6px">${n.titulo}</div></a>
       <div class="bc-excerpt" style="margin-top:6px">${n.resumen || ''}</div>
       <div class="byline" style="font-size:10px;padding-top:8px">
         <span>Por <strong>${n.autor || 'Redacción'}</strong></span>
@@ -436,6 +446,7 @@ function renderRecientes(noticias) {
 function renderSidebar(noticias) {
   const masLeidos = document.getElementById('widget-mas-leidos');
   masLeidos.innerHTML = noticias.slice(0, 5).map((n, i) => `
+  <a href="articulo.html?id=${n.id}" style="text-decoration:none">
   <div class="widget-item">
     <div class="widget-num">0${i+1}</div>
     <div>
@@ -443,7 +454,7 @@ function renderSidebar(noticias) {
       <div class="widget-item-title">${n.titulo}</div>
       <div class="widget-item-meta">${formatDate(n.fecha)} · ${readTime(n.cuerpo)}</div>
     </div>
-  </div>`).join('');
+  </div></a>`).join('');
 
   // Count categories
   const cats = {};

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InnovaDigital</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --ink: #0c0c0c; --ink2: #3d3d3d; --ink3: #8a8a8a;
+  --paper: #fafaf8; --surface: #ffffff;
+  --accent: #0046e5; --accent-light: #eef2ff;
+  --rule: #e4e4e0; --rule-strong: #c8c8c2;
+  --serif: 'Source Serif 4', Georgia, serif;
+  --sans: 'DM Sans', -apple-system, sans-serif;
+}
+body { font-family: var(--serif); background: var(--paper); color: var(--ink); line-height: 1.6; }
+a { text-decoration: none; color: inherit; }
+
+/* TOPBAR */
+.topbar { border-bottom: 1px solid var(--rule); padding: 8px 0; background: var(--surface); }
+.topbar-inner { max-width: 1240px; margin: 0 auto; padding: 0 32px; display: flex; justify-content: space-between; align-items: center; }
+.topbar-date { font-family: var(--sans); font-size: 11px; color: var(--ink3); }
+.topbar-links { display: flex; gap: 20px; }
+.topbar-links a { font-family: var(--sans); font-size: 11px; color: var(--ink3); }
+.topbar-links a:hover { color: var(--accent); }
+.topbar-right { display: flex; gap: 10px; }
+.btn-sm { font-family: var(--sans); font-size: 11px; font-weight: 600; padding: 5px 14px; cursor: pointer; }
+.btn-outline { background: transparent; border: 1px solid var(--rule-strong); color: var(--ink2); }
+.btn-filled { background: var(--accent); border: 1px solid var(--accent); color: #fff; }
+
+/* MASTHEAD */
+.masthead { background: var(--surface); padding: 28px 0 20px; border-bottom: 3px solid var(--ink); }
+.masthead-inner { max-width: 1240px; margin: 0 auto; padding: 0 32px; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+.site-logo { font-family: var(--serif); font-size: 46px; font-weight: 700; letter-spacing: -2.5px; color: var(--ink); line-height: 1; }
+.site-logo .dot { color: var(--accent); }
+.site-tagline { font-family: var(--sans); font-size: 11px; color: var(--ink3); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 6px; }
+
+/* PRIMARY NAV */
+.primary-nav { background: var(--surface); border-bottom: 1px solid var(--rule); }
+.pnav-inner { max-width: 1240px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; }
+.pnav-inner a { font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--ink2); padding: 13px 16px; border-bottom: 2px solid transparent; margin-bottom: -1px; letter-spacing: 0.02em; transition: color .15s; white-space: nowrap; }
+.pnav-inner a:hover { color: var(--ink); }
+.pnav-inner a.active { color: var(--accent); border-bottom-color: var(--accent); }
+.pnav-sep { flex: 1; }
+.pnav-tag { font-family: var(--sans); font-size: 11px; font-weight: 600; color: #fff; background: var(--accent); padding: 4px 12px; }
+
+/* BREADCRUMB */
+.breadcrumb { border-bottom: 1px solid var(--rule); background: var(--surface); }
+.breadcrumb-inner { max-width: 1240px; margin: 0 auto; padding: 10px 32px; display: flex; align-items: center; gap: 8px; font-family: var(--sans); font-size: 12px; color: var(--ink3); }
+.breadcrumb a { color: var(--ink3); }
+.breadcrumb a:hover { color: var(--accent); }
+.breadcrumb .sep { color: var(--rule-strong); }
+
+/* ARTICLE LAYOUT */
+.article-wrap { max-width: 1240px; margin: 0 auto; padding: 40px 32px; display: grid; grid-template-columns: 1fr 300px; gap: 56px; }
+
+/* ARTICLE MAIN */
+.article-main {}
+
+/* FEATURED IMAGE */
+.article-image { width: 100%; margin-bottom: 32px; }
+.article-image img { width: 100%; height: 420px; object-fit: cover; display: block; }
+.article-image-placeholder { width: 100%; height: 420px; display: flex; align-items: center; justify-content: center; }
+.article-image-placeholder span { font-family: var(--sans); font-size: 11px; color: rgba(255,255,255,0.2); text-transform: uppercase; letter-spacing: 0.1em; }
+
+/* ARTICLE HEADER */
+.article-header { margin-bottom: 28px; padding-bottom: 24px; border-bottom: 1px solid var(--rule); }
+.article-kicker { font-family: var(--sans); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); margin-bottom: 12px; display: inline-block; }
+.article-kicker:hover { opacity: 0.8; }
+.article-title { font-family: var(--serif); font-size: 36px; font-weight: 700; line-height: 1.12; letter-spacing: -1px; color: var(--ink); margin-bottom: 16px; }
+.article-deck { font-family: var(--sans); font-size: 18px; color: var(--ink2); line-height: 1.55; margin-bottom: 20px; font-weight: 300; }
+.article-byline { display: flex; gap: 20px; flex-wrap: wrap; font-family: var(--sans); font-size: 12px; color: var(--ink3); align-items: center; }
+.article-byline strong { color: var(--ink2); font-weight: 600; }
+.byline-sep { color: var(--rule-strong); }
+
+/* ARTICLE BODY */
+.article-body { font-size: 18px; line-height: 1.75; color: var(--ink); }
+.article-body p { margin-bottom: 1.4em; }
+.article-body p:last-child { margin-bottom: 0; }
+
+/* SIDEBAR */
+.article-sidebar {}
+.sidebar-widget { border: 1px solid var(--rule); background: var(--surface); margin-bottom: 24px; }
+.sidebar-widget-head { padding: 12px 18px; border-bottom: 1px solid var(--rule); font-family: var(--sans); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink3); background: var(--paper); }
+.related-item { padding: 16px 18px; border-bottom: 1px solid var(--rule); display: flex; gap: 12px; }
+.related-item:last-child { border-bottom: none; }
+.related-img { width: 64px; height: 64px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.related-img img { width: 100%; height: 100%; object-fit: cover; }
+.related-title { font-family: var(--serif); font-size: 13px; font-weight: 600; line-height: 1.3; color: var(--ink); margin-bottom: 4px; }
+.related-title:hover { color: var(--accent); }
+.related-meta { font-family: var(--sans); font-size: 11px; color: var(--ink3); }
+.kicker-mini { font-family: var(--sans); font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 4px; }
+
+/* CAT COLORS */
+.cat-ia        { background: #0c1a3a; }
+.cat-logistica { background: #1a3a20; }
+.cat-energia   { background: #2a1a3a; }
+.cat-ciber     { background: #3a1a1a; }
+.cat-salud     { background: #1a2a3a; }
+.cat-liderazgo { background: #2a2a1a; }
+.cat-industria { background: #1a3028; }
+.cat-default   { background: #1e2228; }
+
+/* ERROR */
+.error-state { max-width: 600px; margin: 80px auto; text-align: center; padding: 0 32px; font-family: var(--sans); }
+.error-state h2 { font-size: 20px; color: var(--ink); margin-bottom: 8px; }
+.error-state p { font-size: 14px; color: var(--ink3); }
+
+/* NEWSLETTER */
+.nl-band { background: var(--ink); padding: 36px 32px; }
+.nl-inner { max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center; }
+.nl-text h2 { font-family: var(--serif); font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+.nl-text p { font-family: var(--sans); font-size: 13px; color: rgba(255,255,255,0.5); }
+.nl-form { display: flex; }
+.nl-form input { padding: 11px 18px; border: none; font-family: var(--sans); font-size: 13px; width: 260px; outline: none; }
+.nl-form button { background: var(--accent); color: #fff; border: none; padding: 11px 22px; font-family: var(--sans); font-size: 13px; font-weight: 600; cursor: pointer; }
+
+/* FOOTER */
+footer { background: var(--surface); border-top: 3px solid var(--ink); padding: 40px 0 24px; }
+.footer-inner { max-width: 1240px; margin: 0 auto; padding: 0 32px; display: grid; grid-template-columns: 220px 1fr 1fr 1fr; gap: 40px; }
+.footer-brand .site-logo { font-size: 24px; letter-spacing: -1px; margin-bottom: 10px; }
+.footer-brand p { font-family: var(--sans); font-size: 12px; color: var(--ink3); line-height: 1.65; }
+.footer-col h4 { font-family: var(--sans); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink3); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--rule); }
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.footer-col a { font-family: var(--sans); font-size: 13px; color: var(--ink2); }
+.footer-col a:hover { color: var(--accent); }
+.footer-bottom { max-width: 1240px; margin: 28px auto 0; padding: 16px 32px 0; border-top: 1px solid var(--rule); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+.footer-bottom span, .footer-bottom a { font-family: var(--sans); font-size: 11px; color: var(--ink3); }
+.flinks { display: flex; gap: 20px; }
+
+/* LOADING */
+.loading { text-align: center; padding: 80px 32px; font-family: var(--sans); color: var(--ink3); font-size: 13px; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="topbar-date" id="fecha-hoy"></span>
+    <div class="topbar-links">
+      <a href="#">Sobre InnovaDigital</a>
+      <a href="#">Newsletter</a>
+      <a href="admin/index.html">Panel Admin</a>
+    </div>
+    <div class="topbar-right">
+      <button class="btn-sm btn-outline">Iniciar sesión</button>
+      <button class="btn-sm btn-filled">Suscribirse gratis</button>
+    </div>
+  </div>
+</div>
+
+<div class="masthead">
+  <div class="masthead-inner">
+    <a href="index.html">
+      <div class="site-logo">InnovaDigital<span class="dot">.</span></div>
+      <div class="site-tagline">Innovación · Industria 4.0 · Transformación Digital</div>
+    </a>
+  </div>
+</div>
+
+<nav class="primary-nav">
+  <div class="pnav-inner">
+    <a href="index.html">Inicio</a>
+    <a href="categoria.html?cat=IA+Industrial">IA Industrial</a>
+    <a href="categoria.html?cat=Logística">Logística</a>
+    <a href="categoria.html?cat=Energía">Energía</a>
+    <a href="categoria.html?cat=Ciberseguridad">Ciberseguridad</a>
+    <a href="categoria.html?cat=Salud+Digital">Salud Digital</a>
+    <a href="categoria.html?cat=Liderazgo">Liderazgo</a>
+    <a href="categoria.html?cat=Industria+4.0">Industria 4.0</a>
+    <div class="pnav-sep"></div>
+    <span class="pnav-tag">Nuevo: Podcast semanal</span>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="index.html">Inicio</a>
+    <span class="sep">›</span>
+    <a href="#" id="bc-cat">—</a>
+    <span class="sep">›</span>
+    <span id="bc-title" style="color:var(--ink2)">Artículo</span>
+  </div>
+</div>
+
+<div id="article-content"><div class="loading">Cargando artículo…</div></div>
+
+<div class="nl-band">
+  <div class="nl-inner">
+    <div class="nl-text">
+      <h2>Newsletter InnovaDigital</h2>
+      <p>Los análisis más relevantes sobre transformación digital, cada semana en tu bandeja.</p>
+    </div>
+    <div class="nl-form">
+      <input type="email" placeholder="tu@empresa.com">
+      <button>Suscribirme →</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="index.html"><div class="site-logo">Innova<span class="dot">D</span></div></a>
+      <p>El blog de referencia en transformación digital para líderes de la industria en América Latina.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Categorías</h4>
+      <ul>
+        <li><a href="categoria.html?cat=IA+Industrial">IA Industrial</a></li>
+        <li><a href="categoria.html?cat=Logística">Logística</a></li>
+        <li><a href="categoria.html?cat=Energía">Energía</a></li>
+        <li><a href="categoria.html?cat=Ciberseguridad">Ciberseguridad</a></li>
+        <li><a href="categoria.html?cat=Salud+Digital">Salud Digital</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Más temas</h4>
+      <ul>
+        <li><a href="categoria.html?cat=Liderazgo">Liderazgo</a></li>
+        <li><a href="categoria.html?cat=Industria+4.0">Industria 4.0</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>InnovaDigital</h4>
+      <ul>
+        <li><a href="#">Acerca del blog</a></li>
+        <li><a href="admin/index.html">Panel Admin</a></li>
+        <li><a href="#">LinkedIn</a></li>
+        <li><a href="#">Privacidad</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 InnovaDigital · Buenos Aires, Argentina</span>
+    <div class="flinks"><a href="#">RSS</a><a href="#">Términos</a><a href="#">Privacidad</a></div>
+  </div>
+</footer>
+
+<script>
+const meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const hoy = new Date();
+document.getElementById('fecha-hoy').textContent = `${['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'][hoy.getDay()]}, ${hoy.getDate()} de ${meses[hoy.getMonth()]} de ${hoy.getFullYear()}`;
+
+function catColor(cat) {
+  const m = { 'IA Industrial':'cat-ia','Logística':'cat-logistica','Energía':'cat-energia','Ciberseguridad':'cat-ciber','Salud Digital':'cat-salud','Liderazgo':'cat-liderazgo','Industria 4.0':'cat-industria' };
+  return m[cat] || 'cat-default';
+}
+
+function formatDate(d) {
+  if (!d) return '';
+  const dt = new Date(d + 'T00:00:00');
+  return `${dt.getDate()} de ${meses[dt.getMonth()]} de ${dt.getFullYear()}`;
+}
+
+function readTime(body) {
+  return Math.max(1, Math.round(((body||'').split(' ').length) / 200)) + ' min lectura';
+}
+
+function escHtml(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function formatBody(text) {
+  if (!text) return '';
+  return text.split(/\n\n+/).map(p => `<p>${escHtml(p.trim()).replace(/\n/g,'<br>')}</p>`).join('');
+}
+
+const params = new URLSearchParams(window.location.search);
+const artId = params.get('id');
+
+async function cargar() {
+  if (!artId) { mostrarError('No se especificó el artículo.'); return; }
+  try {
+    const res = await fetch('content/noticias.json?t=' + Date.now());
+    const data = await res.json();
+    const noticias = data.noticias || [];
+    const articulo = noticias.find(n => n.id === artId);
+    if (!articulo) { mostrarError('Artículo no encontrado.'); return; }
+    const relacionados = noticias.filter(n => n.id !== artId && n.categoria === articulo.categoria).slice(0, 4);
+    renderArticulo(articulo, relacionados);
+  } catch(e) {
+    mostrarError('No se pudo cargar el artículo.');
+  }
+}
+
+function mostrarError(msg) {
+  document.getElementById('article-content').innerHTML = `
+    <div class="error-state">
+      <h2>Oops</h2>
+      <p>${escHtml(msg)}</p>
+      <p style="margin-top:12px"><a href="index.html" style="color:var(--accent)">← Volver al inicio</a></p>
+    </div>`;
+}
+
+function renderArticulo(a, relacionados) {
+  document.title = `${a.titulo} — InnovaDigital`;
+
+  // breadcrumb
+  const bcCat = document.getElementById('bc-cat');
+  bcCat.textContent = a.categoria || 'General';
+  bcCat.href = `categoria.html?cat=${encodeURIComponent(a.categoria || '')}`;
+  document.getElementById('bc-title').textContent = a.titulo.length > 60 ? a.titulo.slice(0,60) + '…' : a.titulo;
+
+  // mark nav active
+  document.querySelectorAll('.pnav-inner a').forEach(el => {
+    try {
+      const u = new URL(el.href);
+      if (u.searchParams.get('cat') === a.categoria) el.classList.add('active');
+    } catch {}
+  });
+
+  // image
+  let imgHtml = '';
+  if (a.imagen) {
+    imgHtml = `<div class="article-image"><img src="${escHtml(a.imagen)}" alt="${escHtml(a.titulo)}" onerror="this.parentElement.style.display='none'"></div>`;
+  } else {
+    imgHtml = `<div class="article-image"><div class="article-image-placeholder ${catColor(a.categoria)}"><span>InnovaDigital</span></div></div>`;
+  }
+
+  // related
+  let relHtml = '';
+  if (relacionados.length) {
+    relHtml = `
+      <div class="sidebar-widget">
+        <div class="sidebar-widget-head">Artículos relacionados</div>
+        ${relacionados.map(r => `
+          <a href="articulo.html?id=${escHtml(r.id)}" class="related-item" style="display:flex;gap:12px;padding:16px 18px;border-bottom:1px solid var(--rule);text-decoration:none;">
+            <div class="related-img ${catColor(r.categoria)}" style="width:64px;height:64px;flex-shrink:0">
+              ${r.imagen ? `<img src="${escHtml(r.imagen)}" alt="" style="width:100%;height:100%;object-fit:cover">` : ''}
+            </div>
+            <div>
+              <div class="kicker-mini">${escHtml(r.categoria)}</div>
+              <div class="related-title">${escHtml(r.titulo)}</div>
+              <div class="related-meta">${formatDate(r.fecha)}</div>
+            </div>
+          </a>`).join('')}
+      </div>`;
+  }
+
+  document.getElementById('article-content').innerHTML = `
+    ${imgHtml}
+    <div class="article-wrap">
+      <article class="article-main">
+        <header class="article-header">
+          <a href="categoria.html?cat=${encodeURIComponent(a.categoria||'')}" class="article-kicker">${escHtml(a.categoria||'General')}</a>
+          <h1 class="article-title">${escHtml(a.titulo)}</h1>
+          <p class="article-deck">${escHtml(a.resumen||'')}</p>
+          <div class="article-byline">
+            <span>Por <strong>${escHtml(a.autor||'Redacción')}</strong></span>
+            <span class="byline-sep">·</span>
+            <span>${formatDate(a.fecha)}</span>
+            <span class="byline-sep">·</span>
+            <span>${readTime(a.cuerpo)}</span>
+          </div>
+        </header>
+        <div class="article-body">${formatBody(a.cuerpo)}</div>
+      </article>
+      <aside class="article-sidebar">
+        ${relHtml}
+      </aside>
+    </div>`;
+}
+
+cargar();
+</script>
+</body>
+</html>

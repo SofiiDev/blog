@@ -259,6 +259,22 @@ textarea { resize: vertical; min-height: 160px; line-height: 1.6; }
         <input type="text" id="f-autor" placeholder="Nombre del autor">
       </div>
       <div class="form-row">
+        <label>Imagen de portada</label>
+        <div style="border:1px solid var(--rule-strong);background:var(--paper);">
+          <div style="padding:12px;display:flex;gap:10px;align-items:center;border-bottom:1px solid var(--rule);">
+            <label for="f-imagen-file" style="all:unset;font-family:var(--sans);font-size:12px;font-weight:600;padding:7px 14px;background:var(--surface);border:1px solid var(--rule-strong);cursor:pointer;color:var(--ink2);text-transform:none;letter-spacing:0;">Subir imagen</label>
+            <input type="file" id="f-imagen-file" accept="image/*" style="display:none" onchange="previsualizarImagen(this)">
+            <span style="font-family:var(--sans);font-size:11px;color:var(--ink3)">o</span>
+            <input type="text" id="f-imagen-url" placeholder="Pegar URL de imagen externa" style="flex:1;font-size:12px;padding:7px 10px;" oninput="previsualizarUrl(this.value)">
+          </div>
+          <div id="img-preview" style="display:none;padding:12px;background:#000">
+            <img id="img-preview-img" src="" alt="Preview" style="max-height:200px;max-width:100%;display:block;margin:0 auto;">
+          </div>
+          <div id="img-uploading" style="display:none;padding:10px 12px;font-family:var(--sans);font-size:12px;color:var(--ink3)">Subiendo imagen…</div>
+        </div>
+        <input type="hidden" id="f-imagen">
+      </div>
+      <div class="form-row">
         <label for="f-cuerpo">Cuerpo del artículo *</label>
         <textarea id="f-cuerpo" placeholder="Escribí el contenido completo del artículo aquí…"></textarea>
       </div>
@@ -441,6 +457,70 @@ async function escribirArchivoGH(noticias, sha, mensaje) {
   return r.json();
 }
 
+// ─── IMAGEN ──────────────────────────────────────────────────────────────────
+
+function previsualizarUrl(url) {
+  document.getElementById('f-imagen').value = url;
+  const preview = document.getElementById('img-preview');
+  const img = document.getElementById('img-preview-img');
+  if (url) { img.src = url; preview.style.display = 'block'; }
+  else { preview.style.display = 'none'; }
+}
+
+function previsualizarImagen(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    const base64 = e.target.result.split(',')[1];
+    const cfg = cargarConfig();
+    if (!cfg.token) {
+      // Sin token: usar base64 directo como data URL (solo para preview/uso local)
+      document.getElementById('f-imagen').value = e.target.result;
+      document.getElementById('img-preview-img').src = e.target.result;
+      document.getElementById('img-preview').style.display = 'block';
+      return;
+    }
+    // Con token: subir a GitHub
+    document.getElementById('img-uploading').style.display = 'block';
+    document.getElementById('img-preview').style.display = 'none';
+    try {
+      const ext = file.name.split('.').pop().toLowerCase();
+      const nombre = `${Date.now()}-${Math.random().toString(36).slice(2,7)}.${ext}`;
+      const path = `images/${nombre}`;
+      const branch = cfg.branch || 'main';
+      const r = await fetch(`https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${path}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: 'Bearer ' + cfg.token,
+          Accept: 'application/vnd.github+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message: `Subir imagen: ${nombre}`, content: base64, branch })
+      });
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      const url = `https://raw.githubusercontent.com/${cfg.owner}/${cfg.repo}/${branch}/${path}`;
+      document.getElementById('f-imagen').value = url;
+      document.getElementById('f-imagen-url').value = url;
+      document.getElementById('img-preview-img').src = url;
+      document.getElementById('img-preview').style.display = 'block';
+      toast('Imagen subida correctamente.', 'success');
+    } catch(err) {
+      toast('Error al subir imagen: ' + err.message, 'error');
+    }
+    document.getElementById('img-uploading').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+
+function resetImagenForm() {
+  document.getElementById('f-imagen').value = '';
+  document.getElementById('f-imagen-url').value = '';
+  document.getElementById('f-imagen-file').value = '';
+  document.getElementById('img-preview').style.display = 'none';
+  document.getElementById('img-uploading').style.display = 'none';
+}
+
 // ─── ESTADO LOCAL ────────────────────────────────────────────────────────────
 
 let noticias = [];
@@ -549,6 +629,7 @@ function abrirModalNuevo() {
   document.getElementById('f-fecha').value = new Date().toISOString().slice(0, 10);
   document.getElementById('f-autor').value = '';
   document.getElementById('f-cuerpo').value = '';
+  resetImagenForm();
   document.getElementById('btn-guardar').textContent = 'Publicar';
   setGuardando(false);
   document.getElementById('modal-overlay').classList.add('open');
@@ -566,6 +647,8 @@ function abrirModalEditar(id) {
   document.getElementById('f-fecha').value     = n.fecha     || '';
   document.getElementById('f-autor').value     = n.autor     || '';
   document.getElementById('f-cuerpo').value    = n.cuerpo    || '';
+  resetImagenForm();
+  if (n.imagen) { previsualizarUrl(n.imagen); document.getElementById('f-imagen-url').value = n.imagen; }
   document.getElementById('btn-guardar').textContent = 'Guardar cambios';
   setGuardando(false);
   document.getElementById('modal-overlay').classList.add('open');
@@ -590,6 +673,7 @@ async function guardarArticulo() {
   const fecha     = document.getElementById('f-fecha').value;
   const autor     = document.getElementById('f-autor').value.trim();
   const cuerpo    = document.getElementById('f-cuerpo').value.trim();
+  const imagen    = document.getElementById('f-imagen').value.trim();
 
   if (!titulo || !resumen || !categoria || !fecha || !autor || !cuerpo) {
     toast('Completá todos los campos antes de publicar.', 'error'); return;
@@ -611,9 +695,9 @@ async function guardarArticulo() {
     shaActual = sha;
 
     if (editandoId) {
-      lista = lista.map(x => x.id === editandoId ? { ...x, titulo, resumen, categoria, fecha, autor, cuerpo } : x);
+      lista = lista.map(x => x.id === editandoId ? { ...x, titulo, resumen, categoria, fecha, autor, cuerpo, imagen } : x);
     } else {
-      lista.push({ id: generarId(), titulo, resumen, categoria, fecha, autor, cuerpo });
+      lista.push({ id: generarId(), titulo, resumen, categoria, fecha, autor, cuerpo, imagen });
     }
 
     const msg = editandoId ? `Editar artículo: ${titulo}` : `Nuevo artículo: ${titulo}`;
